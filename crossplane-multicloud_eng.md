@@ -110,6 +110,8 @@ spec:
 EOF
 ```
 
+</details>
+
 
 ### /KUBERNETES PROVIDER - TEKTON/ANSIBLE
 
@@ -128,11 +130,38 @@ spec:
 EOF
 ```
 
+</details>
+
 
 ### /COMPOSITION
 
-### /XRDS
+### /XRD
 
 ### /USAGE
+
+<details><summary>USAGE RESOURCE</summary>
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: apiextensions.crossplane.io/v1alpha1
+kind: Usage
+metadata:
+  name: vspherevm-uses-bucket
+spec:
+  of:
+    apiVersion: storage.gcp.upbound.io/v1beta1
+    kind: Bucket
+    resourceRef:
+      name: tuesday-test1-kx7fb-cmcbx
+  by:
+    apiVersion: tf.upbound.io/v1beta1
+    kind: Workspace
+    resourceRef:
+      name: tuesday-test1-kx7fb-vc7kn
+EOF
+```
+
+</details>
+
 
 ### /CLAIM
