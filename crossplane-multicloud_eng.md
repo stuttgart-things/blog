@@ -293,3 +293,10 @@ EOF
 
 
 ### /CLAIM
+
+
+### /ADVANTAGES OF (USING) CROSSPLANE
+
+* Developer-friendly: By building on Kubernetes, Crossplane leverages a developer-friendly API. Also, when you combine it with Argo CD or Flux, you can apply GitOps principles in their full glory—combining orchestration, observability, declarative IaC, containers, immutable infrastructure, and DevOps best practices using GitOps as a single source of truth.
+
+Satisfies both Infra Ops and App Opps needs: Through its Compositions, Crossplane makes both Infra Ops teams and App Ops teams happy. As one article explains, while Infra Ops teams “understand how to provision cloud provider-specific components, App Ops teams know the application requirements and understand what is required from the Application Infrastructure perspective
