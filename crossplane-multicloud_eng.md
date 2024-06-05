@@ -1,4 +1,4 @@
-# /CROSSPLANE - PLATFORM ENGINEERING ESSENTIAL NUMBER1
+# /CROSSPLANE - THE (PLATFORM ENGINEERING) ESSENTIAL
 ⚡️Provision and manage cloud infrastructure and services using kubectl⚡️
 
 ## /EXTRACT
@@ -276,13 +276,16 @@ spec:
   of:
     apiVersion: storage.gcp.upbound.io/v1beta1
     kind: Bucket
-    resourceRef:
-      name: tuesday-test1-kx7fb-cmcbx
+    resourceSelector:
+      matchLabels:
+        crossplane.io/claim-namespace: crossplane-system
   by:
     apiVersion: tf.upbound.io/v1beta1
     kind: Workspace
-    resourceRef:
-      name: tuesday-test1-kx7fb-vc7kn
+    resourceSelector:
+       matchLabels:
+        crossplane.io/claim-namespace: crossplane-system
+
 EOF
 ```
 

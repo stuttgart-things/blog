@@ -3,7 +3,7 @@
 EXTRACT:
 * crossplane enables orchestrating applications and infrastructure no matter where they run
 * kubernetes declarative API is used to define the desired state of infrastructure -> crossplane takes care of the rest
-* resources are manageable across multiple clouds or clusters without creating code 
+* resources are manageable across multiple clouds or clusters without creating code
 
 <ADD INTRO HERE>
 
@@ -11,7 +11,7 @@ EXTRACT:
 
 PROVIDER: A provider extends Crossplane by installing controllers for new kinds of managed resources
 XRD (Composite Resource Definition): define new types of composite resources and claims
-CLAIM XRC”, or just “a claim” is also an API type defined using Crossplane. Each type of claim corresponds to a type of composite resource, and the pair have nearly identical schemas. 
+CLAIM XRC”, or just “a claim” is also an API type defined using Crossplane. Each type of claim corresponds to a type of composite resource, and the pair have nearly identical schemas.
 
 ## PREPARATION: CROSSPLANE DEPLOYMENT
 
@@ -65,5 +65,7 @@ spec:
 
 
 ## HELLO-WORLD: INLINE-WORKSPACE
+
+
 
 ## HELLO-WORLD: REMOTE MODULE-CALL
