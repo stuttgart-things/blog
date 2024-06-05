@@ -23,7 +23,7 @@
 
 ### /GCP PROVIDER - GCP BUCKET
 
-## GCP PROVIDER
+ADD DESCRIPTION HERE
 
 <details><summary>GCP PROVIDER INSTALLATION</summary>
 
@@ -93,11 +93,40 @@ kubectl get managed
 
 </details>
 
-
 ### /TERRAFORM PROVIDER - VM
+
+ADD DESCRIPTION HERE
+
+<details><summary>TERRAFORM PROVIDER INSTALLATION</summary>
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-gcp-storage
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-storage:v1.2.0
+EOF
+```
 
 
 ### /KUBERNETES PROVIDER - TEKTON/ANSIBLE
+
+ADD DESCRIPTION HERE
+
+<details><summary>KUBERNETES PROVIDER INSTALLATION</summary>
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-gcp-storage
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-storage:v1.2.0
+EOF
+```
 
 
 ### /COMPOSITION
