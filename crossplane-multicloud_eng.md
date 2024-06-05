@@ -97,6 +97,8 @@ kubectl get managed
 
 </details>
 
+ADD RESULT OF STEP HERE
+
 ### /TERRAFORM PROVIDER - VM
 
 ADD DESCRIPTION HERE
@@ -116,6 +118,15 @@ EOF
 
 </details>
 
+<details><summary>TERRAFORM WORRKSPACE DEFINITION</summary>
+
+```bash
+
+```
+
+</details>
+
+ADD RESULT OF STEP HERE
 
 ### /KUBERNETES PROVIDER - TEKTON/ANSIBLE
 
@@ -125,12 +136,27 @@ ADD DESCRIPTION HERE
 
 ```bash
 kubectl apply -f - <<EOF
-apiVersion: pkg.crossplane.io/v1
-kind: Provider
-metadata:
-  name: provider-gcp-storage
-spec:
-  package: xpkg.upbound.io/upbound/provider-gcp-storage:v1.2.0
+
+EOF
+```
+
+</details>
+
+<details><summary>KUBERNETES PROVIDER CONFIGURATION</summary>
+
+```bash
+kubectl apply -f - <<EOF
+
+EOF
+```
+
+</details>
+
+<details><summary>KUBERNETES OBJECT DEFINITION</summary>
+
+```bash
+kubectl apply -f - <<EOF
+
 EOF
 ```
 
