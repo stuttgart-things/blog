@@ -15,6 +15,11 @@
 * gitops
 * cloud
 
+## /REQURIEMENTS AND SCOPE
+Terraform	Basiswissen und im besten Fall vorhandener IAC-Code ist von Vorteil für die Nachvollziehbarkeit
+Kubernetes	Erfahrung mit der Benutzung von Operatoren ist wünschenswert
+
+
 ## /CONTROL PLANE
 
 - service that watches:
@@ -118,10 +123,100 @@ EOF
 
 </details>
 
+<details><summary>TERRAFORM PROVIDER CONFIGURATION (GCP STATE)</summary>
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: tf.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: gcp-tuesday-test1
+  namespace: crossplane-system
+spec:
+  credentials:
+    - filename: gcp-credentials.json
+      source: Secret
+      secretRef:
+        namespace: crossplane-system
+        name: gcp-secret
+        key: creds
+  configuration: |
+    terraform {
+      backend "gcs" {
+        bucket  = "sthings-bucket-f0b3f1ee7"
+        prefix  = "terraform/state"
+        credentials = "gcp-credentials.json"
+      }
+    }
+```
+
+</details>
+
 <details><summary>TERRAFORM WORRKSPACE DEFINITION</summary>
 
 ```bash
-
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: vsphere-vm
+    crossplane.io/external-name: vsphere-vm
+  labels:
+    crossplane.io/claim-name: tuesday-test1
+    crossplane.io/claim-namespace: crossplane-system
+    crossplane.io/composite: tuesday-test1-knqpq
+  name: tuesday-test1-knqpq-s92xd
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    entrypoint: ""
+    module: git::https://github.com/stuttgart-things/vsphere-vm.git?ref=v1.7.5-2.7.0
+    source: Remote
+    varFiles:
+    - format: HCL
+      secretKeyRef:
+        key: terraform.tfvars
+        name: vsphere-tfvars
+        namespace: crossplane-system
+      source: SecretKey
+    vars:
+    - key: vm_count
+      value: "1"
+    - key: vsphere_vm_name
+      value: tuesday-test1
+    - key: vm_memory
+      value: "4096"
+    - key: vm_disk_size
+      value: "64"
+    - key: vm_num_cpus
+      value: "8"
+    - key: firmware
+      value: bios
+    - key: vsphere_vm_folder_path
+      value: stuttgart-things/testing
+    - key: vsphere_datacenter
+      value: /LabUL
+    - key: vsphere_datastore
+      value: /LabUL/datastore/UL-ESX-SAS-01
+    - key: vsphere_resource_pool
+      value: /LabUL/host/Cluster-V6.5/Resources
+    - key: vsphere_network
+      value: /LabUL/network/LAB-10.31.103
+    - key: vsphere_vm_template
+      value: /LabUL/vm/stuttgart-things/vm-templates/sthings-u23
+    - key: bootstrap
+      value: '["echo STUTTGART-THINGS"]'
+    - key: annotation
+      value: VSPHERE-VM BUILD w/ CROSSPLANE FOR STUTTGART-THINGS
+    - key: unverified_ssl
+      value: "true"
+  managementPolicies:
+  - '*'
+  providerConfigRef:
+    name: gcp-tuesday-test1
+  writeConnectionSecretToRef:
+    name: tuesday-test1
+    namespace: crossplane-system
 ```
 
 </details>
