@@ -64,6 +64,8 @@ spec:
 EOF
 ```
 
+</details>
+
 <details><summary>GCP BUCKET CREATION</summary>
 
 ```bash
