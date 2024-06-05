@@ -1,15 +1,19 @@
 # /CROSSPLANE - PLATFORM ENGINEERING ESSENTIAL NUMBER1
 ⚡️Provision and manage cloud infrastructure and services using kubectl⚡️
 
+## /EXTRACT
+
+
+
 ## /INTRO
 - created by Upbound (released in December 2018)
 - incubating CNCF project by the (2020)
 
 ## /CONCEPTS
-- kubernetes basics
-- operators + cr(d)s
-- gitops
-- cloud
+* kubernetes basics
+* operators + cr(d)s
+* gitops
+* cloud
 
 ## /CONTROL PLANE
 
