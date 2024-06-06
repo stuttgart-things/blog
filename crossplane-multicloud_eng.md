@@ -351,7 +351,7 @@ spec:
                   storage: 20Mi
               storageClassName: openebs-hostpath
   providerConfigRef:
-    name: kubernetes-incluster
+    name: dev-cicd
 EOF
 ```
 
