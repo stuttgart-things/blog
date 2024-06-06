@@ -265,6 +265,8 @@ spec:
 EOF
 ```
 
+</details>
+
 <details><summary>KUBERNETES OBJECT DEFINITION</summary>
 
 ```bash
