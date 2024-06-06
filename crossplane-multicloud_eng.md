@@ -231,27 +231,125 @@ ADD DESCRIPTION HERE
 
 ```bash
 kubectl apply -f - <<EOF
-
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-kubernetes
+spec:
+  package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.14.0
 EOF
 ```
 
 </details>
 
-<details><summary>KUBERNETES PROVIDER CONFIGURATION</summary>
+<details><summary>PROVIDER CONFIG (KUBECONFIG)</summary>
+
+```bash
+# CREATE KUBECONFIG SECRET FROM LOCAL FILE
+kubectl -n crossplane-system create secret generic kubeconfig-dev43 --from-file=/home/sthings/.kube/dev-cicd
+```
 
 ```bash
 kubectl apply -f - <<EOF
-
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  name: dev-cicd
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: kubeconfig-dev-cicd
+      key: dev-cicd
 EOF
 ```
-
-</details>
 
 <details><summary>KUBERNETES OBJECT DEFINITION</summary>
 
 ```bash
 kubectl apply -f - <<EOF
-
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: tekton-baseos
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        name: baseos-dev17-9
+        namespace: tektoncd
+      spec:
+        params:
+        - name: ansibleWorkingImage
+          value: eu.gcr.io/stuttgart-things/sthings-ansible:10.0.1
+        - name: createInventory
+          value: "true"
+        - name: gitRepoUrl
+          value: https://github.com/stuttgart-things/stuttgart-things.git
+        - name: gitRevision
+          value: main
+        - name: gitWorkspaceSubdirectory
+          value: /ansible/workdir/
+        - name: vaultSecretName
+          value: vault
+        - name: installExtraRoles
+          value: "true"
+        - name: ansibleExtraRoles
+          value:
+          - https://github.com/stuttgart-things/install-requirements.git,2024.05.11
+          - https://github.com/stuttgart-things/manage-filesystem.git,2024.05.15
+          - https://github.com/stuttgart-things/install-configure-vault.git
+          - https://github.com/stuttgart-things/create-send-webhook.git,2024-06-06
+        - name: ansiblePlaybooks
+          value:
+          - ansible/playbooks/prepare-env.yaml
+          - ansible/playbooks/base-os.yaml
+        - name: ansibleVarsFile
+          value:
+          - manage_filesystem+-true
+          - update_packages+-true
+          - install_requirements+-true
+          - install_motd+-true
+          - username+-sthings
+          - lvm_home_sizing+-'15%'
+          - lvm_root_sizing+-'35%'
+          - lvm_var_sizing+-'50%'
+          - send_to_msteams+-true
+          - reboot_all+-false
+        - name: ansibleVarsInventory
+          value:
+          - all+["dev17.labul.sva.de"]
+        - name: ansibleExtraCollections
+          value:
+          - https://github.com/stuttgart-things/stuttgart-things/releases/download/0.5.0/sthings-base_os-0.5.0.tar.gz
+          - community.crypto:2.10.0
+        - name: installExtraCollections
+          value: "true"
+        pipelineRef:
+          params:
+          - name: url
+            value: https://github.com/stuttgart-things/stuttgart-things.git
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: stageTime/pipelines/execute-ansible-playbooks.yaml
+          resolver: git
+        workspaces:
+        - name: shared-workspace
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 20Mi
+              storageClassName: openebs-hostpath
+  providerConfigRef:
+    name: kubernetes-incluster
 EOF
 ```
 
@@ -300,3 +398,10 @@ EOF
 * Developer-friendly: By building on Kubernetes, Crossplane leverages a developer-friendly API. Also, when you combine it with Argo CD or Flux, you can apply GitOps principles in their full glory—combining orchestration, observability, declarative IaC, containers, immutable infrastructure, and DevOps best practices using GitOps as a single source of truth.
 
 Satisfies both Infra Ops and App Opps needs: Through its Compositions, Crossplane makes both Infra Ops teams and App Ops teams happy. As one article explains, while Infra Ops teams “understand how to provision cloud provider-specific components, App Ops teams know the application requirements and understand what is required from the Application Infrastructure perspective
+
+
+LINKS:
+https://www.codecentric.de/wissens-hub/blog/crossplane-configuration-packages-github
+https://aaroneaton.com/walkthroughs/crossplane-package-testing-with-kuttl/
+https://info.codecentric.de/hubfs/Softwerker/Softwerker%20Vol.%2024/Softwerker_Vol_24.pdf?utm_campaign=Softwerker%20Vol.%2024&utm_medium=email&_hsenc=p2ANqtz-_qlCO67oCtBxnu4FVF_cOMjQPuJGTy01-N4Th07b11ZGMCbkp6tC89hyP8B3oe3B2JM_2bLKryzPmi29XvtwNiVLkJ1g&_hsmi=308424267&utm_content=308424267&utm_source=hs_email&hsCtaTracking=340cf8bf-40b5-4ff0-8f3b-412292ef74a9%7C960fb87b-dff5-409c-8745-f801169ac171
+https://www.codecentric.de/wissens-hub/blog/testing-crossplane-compositions-kuttl
