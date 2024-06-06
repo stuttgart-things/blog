@@ -1,6 +1,9 @@
 # /CROSSPLANE - THE (PLATFORM ENGINEERING) ESSENTIAL
 ⚡️Provision and manage cloud infrastructure and services using kubectl⚡️
 
+<img src="https://media.licdn.com/dms/image/C4E22AQEd16vto8HKOA/feedshare-shrink_800/0/1671131117163?e=2147483647&v=beta&t=Ac815Z-pKEYJu6Hkve5HCGSi9timgGpEUS4rpSco624" width="600"/>
+
+
 ## /EXTRACT
 
 
@@ -152,7 +155,7 @@ spec:
 
 </details>
 
-<details><summary>TERRAFORM WORRKSPACE DEFINITION</summary>
+<details><summary>TERRAFORM WORKSPACE DEFINITION</summary>
 
 ```bash
 apiVersion: tf.upbound.io/v1beta1
@@ -222,6 +225,8 @@ spec:
 </details>
 
 ADD RESULT OF STEP HERE
+
+<img src="https://i.redd.it/5l2a72cmdss91.png" width="600"/>
 
 ### /KUBERNETES PROVIDER - TEKTON/ANSIBLE
 
