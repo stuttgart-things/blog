@@ -2,7 +2,7 @@
 
 ### Include Pipeline Examples (tbc)
 
-'''yaml
+```yaml
 include:
   - template: Jobs/SAST-IaC.gitlab-ci.yml # template
   - component: codehub.sva.de/to-be-continuous/golang/gitlab-ci-golang@4.10.0 # to be continous
@@ -13,4 +13,4 @@ include:
   - project: Lab/stuttgart-things/stuttgart-things # self written
     file: build/gitlab/build-ko-image.yaml
     ref: master
-'''
+```
