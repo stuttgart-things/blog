@@ -1,6 +1,6 @@
 # Don't repeat yourself with GitLab Pipelines
 
-## REUSE A (CUSTOM) PIPELINE DEFINITION
+## REUSE A (CUSTOM) PIPELINE COMPONENT
 
 ### PIPELINE COMPONENT DEFINITION
 
@@ -24,11 +24,11 @@ ko-build:
     - sthings
 ```
 
-### PIPELINE CALL
+### COMPONENT CALL
 
 ```yaml
-# ..
-  - project: Lab/stuttgart-things/stuttgart-things # self written
+include:
+  - project: Lab/stuttgart-things/stuttgart-things
     file: build/gitlab/build-ko-image.yaml
     ref: master
 ```
