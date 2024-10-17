@@ -2,7 +2,15 @@
 
 ## REUSE A (CUSTOM) PIPELINE COMPONENT
 
+## TEMPLATE VS. COMPONENT
+text why components should be used instead of templates. 
+
+
+## OVERVIEW TABLE 
+
+
 ### PIPELINE COMPONENT DEFINITION
+
 
 example - build ko image
 
@@ -35,6 +43,9 @@ include:
 
 ## USE GITLAB COMPONENT
 
+* how to define inputs
+* what about stages? 
+
 ```yaml
 include:
   - component: codehub.sva.de/components/go/full-pipeline@97f5a6f4811246faa07892e75a17c4c9f7f9c2e3
@@ -60,7 +71,7 @@ include:
 ```
 
 
-## USE GITLAB JOBS
+## USE GITLAB TEMPLATES
 
 ```yaml
 include:
