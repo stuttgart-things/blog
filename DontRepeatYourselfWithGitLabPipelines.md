@@ -70,12 +70,13 @@ stages: [build, test, release]
 
 ## USE GITLAB COMPONENT
 
-* how to define inputs
-* what about stages? 
-
 ```yaml
 include:
   - component: codehub.sva.de/components/go/full-pipeline@97f5a6f4811246faa07892e75a17c4c9f7f9c2e3
+    inputs:
+      go_image: 'golang:latest'
+
+stages: [build]
 ```
 
 ## USE TO BE CONTIUOUS 
