@@ -7,6 +7,7 @@ text why components should be used instead of templates.
 
 
 ## OVERVIEW TABLE 
+* include component vs include project
 
 
 ### PIPELINE COMPONENT DEFINITION
@@ -33,6 +34,7 @@ ko-build:
 ```
 
 ### COMPONENT CALL
+
 
 ```yaml
 include:
