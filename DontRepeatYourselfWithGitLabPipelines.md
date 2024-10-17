@@ -86,7 +86,11 @@ include:
 
 ```yaml
 include:
-  - template: Jobs/SAST-IaC.gitlab-ci.yml # template
+  - template: Jobs/SAST.gitlab-ci.yml
+
+variables:
+  SCAN_KUBERNETES_MANIFESTS: "true"
+
 ```
 
 
