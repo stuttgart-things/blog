@@ -21,7 +21,6 @@ CI/CD components are similar to the other kinds of configuration added with the
 
 ### PIPELINE COMPONENT DEFINITION
 
-
 example - build ko image
 
 ```yaml
@@ -40,6 +39,17 @@ ko-build:
     - ko build $KO_REPO --insecure-registry
   tags:
     - sthings
+```
+
+example - include the component located in the current project from the current SHA
+
+```yaml
+include:
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/my-component@$CI_COMMIT_SHA
+    inputs:
+      stage: build
+
+stages: [build, test, release]
 ```
 
 ### COMPONENT CALL
