@@ -3,8 +3,17 @@
 ## REUSE A (CUSTOM) PIPELINE COMPONENT
 
 ## TEMPLATE VS. COMPONENT
-text why components should be used instead of templates. 
 
+CI/CD components are the next generation of CI/CD templates, enhancing pipeline creation and maintenance. CI/CD components are reusable, single-purpose building blocks that abstract away pipeline configuration units.
+
+CI/CD components are similar to the other kinds of configuration added with the include keyword, but have several advantages:
+* Components can be listed in the CI/CD Catalog.
+* Components can be released and used with a specific version.
+* Multiple components can be defined in the same project and versioned together.
+* This leads to:
+  * Reusability and abstraction
+  * Flexibility with input
+  * High-quality standards through testing
 
 ## OVERVIEW TABLE 
 * include component vs include project
