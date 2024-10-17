@@ -86,16 +86,26 @@ https://to-be-continuous.gitlab.io/kicker/
 
 ### PIPELINE CALL
 
-* HOW TO HANDLE STAGES
-* HOW TO OVERWRITE VARIABLES
-* WHERE DO I KNOW WHICH VARIABLES EXISTS?
+### Use as a CI/CD component
 
 ```yaml
 include:
-  - component: codehub.sva.de/to-be-continuous/golang/gitlab-ci-golang@4.10.0 # to be continous
+  - component: codehub.sva.de/to-be-continuous/golang/gitlab-ci-golang@4.11.0
     inputs:
-      sbom-disabled: true
-      build-mode: "application"
+      image: "registry.hub.docker.com/library/golang:buster"
+```
+
+### Use as a CI/CD template
+
+```yaml
+include:
+  - project: 'to-be-continuous/golang'
+    ref: '4.11.0'
+    file: '/templates/gitlab-ci-golang.yml'
+
+variables:
+  GO_IMAGE: "registry.hub.docker.com/library/golang:buster"
+
 ```
 
 
