@@ -40,6 +40,16 @@ ko-build:
   tags:
     - sthings
 ```
+### COMPONENT CALL
+
+
+```yaml
+include:
+  - project: Lab/stuttgart-things/stuttgart-things
+    file: build/gitlab/build-ko-image.yaml
+    ref: master
+```
+
 
 example - include the component located in the current project from the current SHA
 
@@ -52,15 +62,6 @@ include:
 stages: [build, test, release]
 ```
 
-### COMPONENT CALL
-
-
-```yaml
-include:
-  - project: Lab/stuttgart-things/stuttgart-things
-    file: build/gitlab/build-ko-image.yaml
-    ref: master
-```
 
 ## USE GITLAB COMPONENT
 
