@@ -16,7 +16,7 @@ CI/CD components are similar to the other kinds of configuration added with the
   * High-quality standards through testing
 
 ## OVERVIEW TABLE 
-|     | Component (custom)         | Component (GitLab) | TBC          | Template |
+|     | Component (custom)         | Component (GitLab) | To Be Continous          | Template |
 | --- | -------------------------- | ------------------ | ------------ | -------- |
 | Description     | Include files from another private project on the same GitLab instance | Add a [CI/CD component](https://docs.gitlab.com/ee/ci/components/index.html) to the pipeline configuration | Building a CI/CD pipeline by including a couple of GitLab CI templates in the .gitlab-ci.yml file | Instead of building pipelines from scratch, CI/CD templates simplify the process by having parameters already built-in.|
 | Include Keyword | include:project or include:file | include:component | include:component or include:template or include:remote | include:template |
