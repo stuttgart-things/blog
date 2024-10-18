@@ -34,6 +34,8 @@ CI/CD components are similar to the other kinds of configuration added with the
 PIPELINE COMPONENT DEFINITION
 
 ```yaml
+# build-ko-image.yaml
+
 spec:
   inputs:
     stage:
@@ -54,6 +56,8 @@ ko-build:
 COMPONENT CALL
 
 ```yaml
+# .gitlab-ci.yml
+
 include:
   - project: Lab/stuttgart-things/stuttgart-things
     file: build/gitlab/build-ko-image.yaml
@@ -64,6 +68,8 @@ include:
 ### example - include the component located in the current project from the current SHA
 
 ```yaml
+# .gitlab-ci.yml
+
 include:
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/my-component@$CI_COMMIT_SHA
     inputs:
@@ -77,6 +83,8 @@ stages: [build, test, release]
 
 ### example - use the full go pipeline
 ```yaml
+# .gitlab-ci.yml
+
 include:
   - component: codehub.sva.de/components/go/full-pipeline@97f5a6f4811246faa07892e75a17c4c9f7f9c2e3
     inputs:
@@ -87,6 +95,8 @@ stages: [build]
 
 ### example - only use the build part of the go pipleine
 ```yaml
+# .gitlab-ci.yml
+
 include:
   - component: codehub.sva.de/components/go/build@97f5a6f4811246faa07892e75a17c4c9f7f9c2e3
     inputs:
@@ -100,6 +110,8 @@ stages: [build]
 ### Use as a CI/CD component
 
 ```yaml
+# .gitlab-ci.yml
+
 include:
   - component: codehub.sva.de/to-be-continuous/golang/gitlab-ci-golang@4.11.0
     inputs:
@@ -109,6 +121,8 @@ include:
 ### Use as a CI/CD template
 
 ```yaml
+# .gitlab-ci.yml
+
 include:
   - project: 'to-be-continuous/golang'
     ref: '4.11.0'
@@ -123,6 +137,8 @@ variables:
 ## USE GITLAB TEMPLATES
 
 ```yaml
+# .gitlab-ci.yml
+
 include:
   - template: Jobs/SAST.gitlab-ci.yml
 
