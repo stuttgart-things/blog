@@ -29,15 +29,15 @@ CI/CD components are similar to the other kinds of configuration added with the
 
 ## REUSE A (CUSTOM) PIPELINE COMPONENT
 
-### example - build ko image
+* Customs components can be created when there is no published component in the CI/CD Catalog (that has the functionality your project is needing)
+* The component files have to be stored in a project on the same GitLab instance
 
-Customs components can be created when there is no published component in the CI/CD Catalog that has the functionality needed. The component files have to be stored in a project on the same GitLab instance.
+### PIPELINE COMPONENT DEFINITION 
 
-
-PIPELINE COMPONENT DEFINITION
+* The component can be stored in any GitLab repository (maybe you choose a central repository for all of your components)
 
 ```yaml
-# build-ko-image.yaml
+# sharedpipelines-repository(Lab/stuttgart-things/stuttgart-things):components/build-ko-image.yaml
 
 spec:
   inputs:
@@ -56,15 +56,17 @@ ko-build:
     - sthings
 ```
 
-COMPONENT CALL
+* add a git tag to create a proper reference to the pipeline (better than using "latest greatest" main/master as ref)
+
+### COMPONENT CALL
 
 ```yaml
-# .gitlab-ci.yml
+# your-app-repository: .gitlab-ci.yml
 
 include:
   - project: Lab/stuttgart-things/stuttgart-things
-    file: build/gitlab/build-ko-image.yaml
-    ref: master
+    file: components/build-ko-image.yaml
+    ref: kobuild-go-123-2
 ```
 
 
