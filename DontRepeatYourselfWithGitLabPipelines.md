@@ -1,4 +1,4 @@
-# Don't repeat yourself with GitLab Pipelines - Use components!
+# Don't repeat yourself by using GitLab Components
 
 When working with GitLab pipelines, one of the core principles to ensure efficiency and maintainability is "Don't Repeat Yourself" (DRY). Repetitive code not only increases maintenance overhead but also introduces the risk of inconsistencies across different parts of a project. GitLab's move from CI/CD templates to CI/CD components is a perfect example of applying DRY principles.
 
