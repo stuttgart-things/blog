@@ -17,24 +17,24 @@ CI/CD components are similar to the other kinds of configuration added with the
   * Flexibility with input
   * High-quality standards through testing
 
-## TEMPLATE VS. COMPONENT
+## COMPONENTS VS. TEMPLATE
 
-|     | Component (custom)         | Component (GitLab) | To Be Continous          | Template |
+In the following table Components (custom, GitLab and To Be Continous (TBC)) and Templates are compared.
+
+|     | Components (custom)         | Components (GitLab) | Components (TBC)          | Templates |
 | --- | -------------------------- | ------------------ | ------------ | -------- |
-| Description     | Include custom files from another private project on the same GitLab instance to the pipeline| Add a modular [GitLab CI/CD component](https://docs.gitlab.com/ee/ci/components/index.html) to the pipeline | Set of GitLab CI templates developed and maintained by DevOps and technology experts to build state-of-the-art CI/CD pipelines in minutes | Predefined YAML files that provide reusable and shareable configurations for setting up CI/CD pipelines|
-| Include Keyword | ```include:project``` or ```include:file``` | ```include:component``` | ```include:component``` to use it as a CI/CD component; ```include:project``` to use it as a regular template | ```include:template``` |
-| Source          | custom project or file path | [GitLab Components](https://gitlab.com/components) or [Codehub Components](https://codehub.sva.de/components/) | [TBC Generator](https://to-be-continuous.gitlab.io/kicker/) or [TBC Repo](https://codehub.sva.de/to-be-continuous) | [CI-Templates](https://gitlab.com/gitlab-org/gitlab/-/tree/master/lib/gitlab/ci/templates) |
-| Configuration   | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | with [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) if using the include:component technique \* or with [variables](https://docs.gitlab.com/ee/ci/variables/) if using include:project or include:remote | [variables](https://docs.gitlab.com/ee/ci/variables/)                                                                                                                                                                                                                                    |
+| **Description**     | Include custom files from another private project on the same GitLab instance to the pipeline| Add a modular [GitLab CI/CD component](https://docs.gitlab.com/ee/ci/components/index.html) to the pipeline | Set of GitLab CI templates developed and maintained by DevOps and technology experts to build state-of-the-art CI/CD pipelines in minutes | Predefined YAML files that provide reusable and shareable configurations for setting up CI/CD pipelines|
+| **Include Keyword** | ```include:project``` or ```include:file``` | ```include:component``` | ```include:component``` to use it as a CI/CD component; ```include:project``` to use it as a regular template | ```include:template``` |
+| **Source**          | custom project or file path | [GitLab Components](https://gitlab.com/components) or [Codehub Components](https://codehub.sva.de/components/) | [TBC Generator](https://to-be-continuous.gitlab.io/kicker/) or [TBC Repo](https://codehub.sva.de/to-be-continuous) | [CI-Templates](https://gitlab.com/gitlab-org/gitlab/-/tree/master/lib/gitlab/ci/templates) |
+| **Configuration**   | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | with [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) if using the include:component technique or with [variables](https://docs.gitlab.com/ee/ci/variables/) if using include:project or include:remote | [variables](https://docs.gitlab.com/ee/ci/variables/)                                                                                                                                                                                                                                    |
 
 
 ## REUSE A (CUSTOM) PIPELINE COMPONENT
 
-* Customs components can be created when there is no published component in the CI/CD Catalog (that has the functionality your project is needing)
+* Custom components can be created when there is no published component in the CI/CD Catalog (that has the functionality your project needs)
 * The component files have to be stored in a project on the same GitLab instance
 
 ### PIPELINE COMPONENT DEFINITION 
-
-* The component can be stored in any GitLab repository (maybe you choose a central repository for all of your components)
 
 ```yaml
 # sharedpipelines-repository(Lab/stuttgart-things/stuttgart-things):components/build-ko-image.yaml
