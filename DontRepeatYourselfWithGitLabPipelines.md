@@ -31,6 +31,9 @@ CI/CD components are similar to the other kinds of configuration added with the
 
 ### example - build ko image
 
+Customs components can be created when there is no published component in the CI/CD Catalog that has the functionality needed. The component files have to be stored in a project on the same GitLab instance.
+
+
 PIPELINE COMPONENT DEFINITION
 
 ```yaml
@@ -80,6 +83,9 @@ stages: [build, test, release]
 
 
 ## USE GITLAB COMPONENT
+
+The CI/CD Catalog contains published components that can be used if they have the functionality needed, so that no custom components have to be created.
+
 
 ### example - use the full go pipeline
 ```yaml
