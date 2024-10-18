@@ -18,10 +18,10 @@ CI/CD components are similar to the other kinds of configuration added with the
 ## OVERVIEW TABLE 
 |     | Component (custom)         | Component (GitLab) | To Be Continous          | Template |
 | --- | -------------------------- | ------------------ | ------------ | -------- |
-| Description     | Include custom files from another private project on the same GitLab instance to the pipeline| Add a [GitLab CI/CD component](https://docs.gitlab.com/ee/ci/components/index.html) to the pipeline | Set of GitLab CI templates developed and maintained by DevOps and technology experts to build state-of-the-art CI/CD pipelines in minutes | Predefined YAML files that provide reusable and shareable configurations for setting up CI/CD pipelines|
+| Description     | Include custom files from another private project on the same GitLab instance to the pipeline| Add a modular [GitLab CI/CD component](https://docs.gitlab.com/ee/ci/components/index.html) to the pipeline | Set of GitLab CI templates developed and maintained by DevOps and technology experts to build state-of-the-art CI/CD pipelines in minutes | Predefined YAML files that provide reusable and shareable configurations for setting up CI/CD pipelines|
 | Include Keyword | include:project or include:file | include:component | include:component to use it as a CI/CD component; include:project to use it as a regular template | include:template |
 | Source          | custom project or file path | [GitLab Components](https://gitlab.com/components) or [Codehub Components](https://codehub.sva.de/components/) | [TBC Generator](https://to-be-continuous.gitlab.io/kicker/) or [TBC Repo](https://codehub.sva.de/to-be-continuous) | [CI-Templates](https://gitlab.com/gitlab-org/gitlab/-/tree/master/lib/gitlab/ci/templates) |
-| Configuration   | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | with [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) if using the include:componentbtechnique \* or with [variables](https://docs.gitlab.com/ee/ci/variables/) if using include:template or include:remote | [variables](https://docs.gitlab.com/ee/ci/variables/)                                                                                                                                                                                                                                    |
+| Configuration   | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | with [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) if using the include:component technique \* or with [variables](https://docs.gitlab.com/ee/ci/variables/) if using include:project or include:remote | [variables](https://docs.gitlab.com/ee/ci/variables/)                                                                                                                                                                                                                                    |
 
 
 ## REUSE A (CUSTOM) PIPELINE COMPONENT
@@ -93,10 +93,6 @@ stages: [build]
 ```
 
 ## USE TO BE CONTIUOUS 
-
-https://to-be-continuous.gitlab.io/kicker/
-[to-be-continuous](https://gitlab.com/to-be-continuous)
-
 
 ### Use as a CI/CD component
 
