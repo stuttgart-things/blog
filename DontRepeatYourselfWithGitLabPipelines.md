@@ -1,7 +1,5 @@
 # Don't repeat yourself with GitLab Pipelines - Use components!
 
-## TEMPLATE VS. COMPONENT
-
 When working with GitLab pipelines, one of the core principles to ensure efficiency and maintainability is "Don't Repeat Yourself" (DRY). Repetitive code not only increases maintenance overhead but also introduces the risk of inconsistencies across different parts of a project. GitLab's move from CI/CD templates to CI/CD components is a perfect example of applying DRY principles.
 
 ## ONCE UPON A TIME: GITLAB TEMPLATES
@@ -19,7 +17,8 @@ CI/CD components are similar to the other kinds of configuration added with the
   * Flexibility with input
   * High-quality standards through testing
 
-## OVERVIEW TABLE 
+## TEMPLATE VS. COMPONENT
+
 |     | Component (custom)         | Component (GitLab) | To Be Continous          | Template |
 | --- | -------------------------- | ------------------ | ------------ | -------- |
 | Description     | Include custom files from another private project on the same GitLab instance to the pipeline| Add a modular [GitLab CI/CD component](https://docs.gitlab.com/ee/ci/components/index.html) to the pipeline | Set of GitLab CI templates developed and maintained by DevOps and technology experts to build state-of-the-art CI/CD pipelines in minutes | Predefined YAML files that provide reusable and shareable configurations for setting up CI/CD pipelines|
