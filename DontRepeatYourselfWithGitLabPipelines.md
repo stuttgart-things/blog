@@ -8,6 +8,9 @@ GitLab CI/CD templates are predefined YAML files that provide reusable and share
 ## 2024: USE GITLAB COMPONENTS
 CI/CD components are the next generation of CI/CD templates. CI/CD components are reusable, single-purpose building blocks that abstract away pipeline configuration units. With the introduction of the CI/CD Catalog, GitLab is no longer accepting contributions of new CI/CD templates to the codebase. Instead CI/CD components for the catalog should be created. This transition enhances the modularity and maintainability of shared CI/CD resources, and avoids the complexities of contributing new CI/CD templates. 
 
+<img src="gitlab_templates.png" alt="description" width="200" >
+
+
 CI/CD components are similar to the other kinds of configuration added with the include keyword, but have several advantages:
 * Components can be listed in the CI/CD Catalog.
 * Components can be released and used with a specific version.
