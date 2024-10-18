@@ -1,10 +1,10 @@
 # Don't repeat yourself with GitLab Pipelines
 
-## REUSE A (CUSTOM) PIPELINE COMPONENT
-
 ## TEMPLATE VS. COMPONENT
 
-CI/CD components are the next generation of CI/CD templates, enhancing pipeline creation and maintenance. CI/CD components are reusable, single-purpose building blocks that abstract away pipeline configuration units.
+GitLab CI/CD templates are predefined YAML files that provide reusable and shareable configurations for setting up CI/CD pipelines in GitLab. These templates were designed to simplify the process of defining pipelines by offering pre-configured stages, jobs, and scripts for common tasks, eliminating the need to write everything from scratch.
+
+CI/CD components are the next generation of CI/CD templates. CI/CD components are reusable, single-purpose building blocks that abstract away pipeline configuration units. With the introduction of the CI/CD Catalog, GitLab is no longer accepting contributions of new CI/CD templates to the codebase. Instead CI/CD components for the catalog should be created. This transition enhances the modularity and maintainability of shared CI/CD resources, and avoids the complexities of contributing new CI/CD templates. 
 
 CI/CD components are similar to the other kinds of configuration added with the include keyword, but have several advantages:
 * Components can be listed in the CI/CD Catalog.
@@ -24,7 +24,7 @@ CI/CD components are similar to the other kinds of configuration added with the
 | Configuration   | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | with [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) if using the include:componentbtechnique \* or with [variables](https://docs.gitlab.com/ee/ci/variables/) if using include:template or include:remote | [variables](https://docs.gitlab.com/ee/ci/variables/)                                                                                                                                                                                                                                    |
 
 
-## USE CUSTOM COMPONENT
+## REUSE A (CUSTOM) PIPELINE COMPONENT
 
 ### example - build ko image
 
