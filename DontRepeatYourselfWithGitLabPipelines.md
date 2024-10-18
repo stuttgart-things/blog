@@ -24,9 +24,11 @@ CI/CD components are similar to the other kinds of configuration added with the
 | Configuration   | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) | with [inputs](https://docs.gitlab.com/ee/ci/components/index.html#use-a-component) if using the include:componentbtechnique \* or with [variables](https://docs.gitlab.com/ee/ci/variables/) if using include:template or include:remote | [variables](https://docs.gitlab.com/ee/ci/variables/)                                                                                                                                                                                                                                    |
 
 
-### PIPELINE COMPONENT DEFINITION
+## USE CUSTOM COMPONENT
 
-example - build ko image
+### example - build ko image
+
+PIPELINE COMPONENT DEFINITION
 
 ```yaml
 spec:
@@ -45,8 +47,8 @@ ko-build:
   tags:
     - sthings
 ```
-### COMPONENT CALL
 
+COMPONENT CALL
 
 ```yaml
 include:
@@ -56,7 +58,7 @@ include:
 ```
 
 
-example - include the component located in the current project from the current SHA
+### example - include the component located in the current project from the current SHA
 
 ```yaml
 include:
@@ -70,9 +72,20 @@ stages: [build, test, release]
 
 ## USE GITLAB COMPONENT
 
+### example - use the full go pipeline
 ```yaml
 include:
   - component: codehub.sva.de/components/go/full-pipeline@97f5a6f4811246faa07892e75a17c4c9f7f9c2e3
+    inputs:
+      go_image: 'golang:latest'
+
+stages: [build]
+```
+
+### example - only use the build part of the go pipleine
+```yaml
+include:
+  - component: codehub.sva.de/components/go/build@97f5a6f4811246faa07892e75a17c4c9f7f9c2e3
     inputs:
       go_image: 'golang:latest'
 
@@ -84,7 +97,6 @@ stages: [build]
 https://to-be-continuous.gitlab.io/kicker/
 [to-be-continuous](https://gitlab.com/to-be-continuous)
 
-### PIPELINE CALL
 
 ### Use as a CI/CD component
 
