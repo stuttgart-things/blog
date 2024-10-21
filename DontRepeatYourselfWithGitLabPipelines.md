@@ -104,7 +104,7 @@ include:
 stages: [build]
 ```
 
-### example - only use the build part of the go pipleine
+### example - only use the build part of the go pipeline
 ```yaml
 # .gitlab-ci.yml
 
@@ -116,7 +116,7 @@ include:
 stages: [build]
 ```
 
-## USE TO BE CONTIUOUS 
+## USE TO BE CONTINUOUS 
 
 ### Use as a CI/CD component
 
