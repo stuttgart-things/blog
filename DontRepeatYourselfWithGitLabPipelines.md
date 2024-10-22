@@ -9,9 +9,8 @@ Don't Repeat Yourself! When working with GitLab pipelines, one of the core prin
 Once upon a time - GitLab Templates: GitLab CI/CD templates are predefined YAML files that provide reusable and shareable configurations for setting up CI/CD pipelines in GitLab. These templates were designed to simplify the process of defining pipelines by offering pre-configured stages, jobs, and scripts for common tasks, eliminating the need to write everything from scratch.
 
 But the templates also bring some disadvantages:
-
-complexities of contributing new CI/CD templates
-no modularity within the templates
+* complexities of contributing new CI/CD templates
+* no modularity within the templates
 
 With the introduction of To Be Continuous (TBC) GitLab CI was made easy. It enables developers to build pipelines within minutes. The goal is to build a professional CI/CD pipeline as easy as possible by including a couple of GitLab CI templates in the .gitlab-ci.yaml file. The TBC templates are developed and maintained bei DevOps and technology experts to build state-of-the-art CI/CD pipelines. When following the guide and including the templates there is no need to master GitLab CI.
 
