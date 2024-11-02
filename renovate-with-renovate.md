@@ -4,7 +4,7 @@
 [//]: # (Links)
 [//]: # (Intro)
 
-## Integrated Automated Dependency Updates  
+## Integrated Automated Dependency Updates
 
 * GoLang Dependencies
 * Dockerfile
@@ -12,6 +12,26 @@
 * OCI Dependencies [HELM](https://docs.renovatebot.com/modules/manager/helmv3)
 * Flux Dependencies (Preview Envs?)
 * ArgoCD Dependencies (Preview Envs?)
+
+## RENOVATE DRY-RUN
+
+```bash
+cat <<EOF > config.json
+{
+    "repositories": ["stuttgart-things/clusterbook"],
+    "dryRun" : "full"
+}
+EOF
+
+docker run --rm -v "$(pwd)/config.json:/opt/renovate/config.json"`\
+-e RENOVATE_PLATFORM=github \
+-e RENOVATE_TOKEN=${GITHUB_TOKEN} \
+-e LOG_LEVEL=debug \
+-e RENOVATE_CONFIG_FILE=/opt/renovate/config.json \
+renovate/renovate
+```
+
+https://github.com/renovatebot/renovate/blob/main/docs/usage/examples/self-hosting.md
 
 ## SETUP RENOVATE
 
@@ -46,7 +66,7 @@ docker run --rm -v "$(pwd):/usr/src/app" renovate/renovate
 ```
 
 
-## Custom Dependency Updates  
+## Custom Dependency Updates
 
 [//]: # (Add sthings ansible example)
 
@@ -57,4 +77,3 @@ docker run --rm -v "$(pwd):/usr/src/app" renovate/renovate
 ## Local / Testing
 
 [//]: # (outro)
-

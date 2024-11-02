@@ -49,7 +49,7 @@ ansible-playbook sthings.deploy_rke.rke2 \
 ### METALLB
 
 ```bash
-cat <<EOF > ~/projects/metallb.yaml # absolute path needed for deployment_vars
+cat <<EOF > ~/projects/rke2/metallb.yaml # absolute path needed for deployment_vars
 ---
 ip_range: 10.31.103.18-10.31.103.18
 EOF
@@ -57,7 +57,7 @@ EOF
 
 ```bash
 ansible-playbook sthings.deploy_rke.deploy_to_k8s \
--e deployment_vars=~/projects/metallb.yaml \
+-e deployment_vars=~/projects/rke2/metallb.yaml \
 -e path_to_kubeconfig=~/.kube/rke2 \
 -e profile=metallb \
 -e state=present \
@@ -77,7 +77,7 @@ ansible-playbook sthings.deploy_rke.deploy_to_k8s \
 ### CERT-MANAGER
 
 ```bash
-cat <<EOF > ~/projects/cert-manager.yaml # absolute path needed for deployment_vars
+cat <<EOF > ~/projects/rke2/cert-manager.yaml # absolute path needed for deployment_vars
 ---
 approle_id: <SECRET>
 approle_secret: <SECRET>
@@ -94,22 +94,19 @@ ansible-playbook sthings.deploy_rke.deploy_to_k8s \
 -e path_to_kubeconfig=~/.kube/rke2 \
 -e profile=cert-manager \
 -e state=present \
--e deployment_vars=~/projects/cert-manager.yaml \
+-e deployment_vars=~/projects/rke2/cert-manager.yaml \
 -vv
 ```
 
 ### RANCHER
 
 ```bash
-cat <<EOF > ~/projects/cert-manager.yaml # absolute path needed for deployment_vars
+cat <<EOF > ~/projects/rke2/cert-manager.yaml # absolute path needed for deployment_vars
 ---
-approle_id: <SECRET>
-approle_secret: <SECRET>
-ca_bundle: <SECRET>
-name_cluster_issuer: cluster-issuer-approle
-pki_path: pki/sign/sthings-vsphere.labul.sva.de
-vault_server: https://vault-vsphere.labul.sva.de:8200
-vault_secret: vault-approle
+hostname: rancher-things
+domain: demo-rancher.sthings-vsphere.labul.sva.de
+ca_certs: <SECRET>
+password: "{{ lookup('community.general.random_string', length=16) }}"
 EOF
 ```
 
@@ -118,7 +115,7 @@ ansible-playbook sthings.deploy_rke.deploy_to_k8s \
 -e path_to_kubeconfig=~/.kube/rke2 \
 -e profile=rancher \
 -e state=present \
--e deployment_vars=~/projects/cert.yaml \
+-e deployment_vars=~/projects/rke2/cert.yaml \
 -vv
 ```
 
@@ -130,7 +127,7 @@ ansible-playbook sthings.deploy_rke.api_token \
 -vv \
 -e profile=rancher \
 -e state=present \
--e deployment_vars=~/projects/cert.yaml
+-e deployment_vars=~/projects/rke2/cert.yaml
 ```
 
 ### DOWNSTEAM-CLUSTER
