@@ -13,6 +13,13 @@
 * Flux Dependencies (Preview Envs?)
 * ArgoCD Dependencies (Preview Envs?)
 
+## RENOVATE vs. DEPANDABOT
+* Large projects with complex dependencies or monorepos.
+* Cross-platform support requirements, or when using multiple package managers.
+* Teams that want more control over scheduling, grouping, and merging of dependency updates.
+* Organizations that need self-hosted options or more control over security and compliance.
+* Teams that prefer advanced automation and detailed changelogs.
+
 ## RENOVATE DRY-RUN
 
 ```bash
@@ -98,11 +105,13 @@ docker run --rm -v "$(pwd):/usr/src/app" renovate/renovate
   }
 ```
 
-Run Renovate Locally
+Run Renovate
 
 ```bash
 docker run --rm -e RENOVATE_CONFIG_FILE=config.json -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
 ```
+
+Renovate will create an Issue called "Dependency Dashboard" in GitLab with the findings.
 
 ## GitHub Integration
 
