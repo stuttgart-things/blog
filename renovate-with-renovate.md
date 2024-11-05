@@ -72,8 +72,73 @@ docker run --rm -v "$(pwd):/usr/src/app" renovate/renovate
 
 ## GitLab Integration
 
+```json
+{
+    "platform": "gitlab",
+    "endpoint": "https://codehub.sva.de/api/v4",
+    "token": ${GITAB_TOKEN} ,
+    "repositories": ["Lab/stuttgart-things/homerun/homerun-gitlab-pitcher"] ,
+    "dryRun": true,
+    "hostRules": [
+      {
+        "hostType": "docker",
+        "matchHost": ${HOST},
+        "username": ${USER},
+        "password": ${PASSWORD} 
+      }
+    ],
+    "logLevel": "info",  // Set to debug for detailed logs
+    // "packageRules": [
+    //   {
+    //     "matchPackageNames": ["*"],
+    //     "enabled": true,
+    //     "groupName": "All Updates" // Optional: To group all updates together
+    //   }
+    // ]
+  }
+```
+
+Run Renovate Locally
+
+```bash
+docker run --rm -e RENOVATE_CONFIG_FILE=config.json -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
+```
+
 ## GitHub Integration
 
 ## Local / Testing
+
+```json
+{
+    "platform": "gitlab",
+    "endpoint": "https://codehub.sva.de/api/v4",
+    "token": ${GITLAB_TOKEN},
+    "repositories": ["Lab/stuttgart-things/homerun/homerun-gitlab-pitcher"] ,
+    "dryRun": true,
+    "hostRules": [
+      {
+        "hostType": "docker",
+        "matchHost": ${HOST},
+        "username": ${USER},
+        "password": ${PASSWORD} 
+      }
+    ],
+    "logLevel": "debug",  // Set to debug for detailed logs
+    // "packageRules": [
+    //   {
+    //     "matchPackageNames": ["*"],
+    //     "enabled": true,
+    //     "groupName": "All Updates" // Optional: To group all updates together
+    //   }
+    // ]
+  }
+```
+
+Run Renovate Locally
+
+```bash
+docker run --rm -e RENOVATE_CONFIG_FILE=config.json -e LOG_LEVEL=debug -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
+```
+
 
 [//]: # (outro)
