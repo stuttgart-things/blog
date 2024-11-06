@@ -1,8 +1,12 @@
 # Renovate w/ renovate
 
-[//]: # (Extract)
+[//]: # (Abstract)
 [//]: # (Links)
 [//]: # (Intro)
+
+## Introduction
+
+Renovate updates dependencies in the code without needing to do it manually. Renovate runs on the repo and looks for references to dependencies (both public and private). If there are newer versions available, Renovate can create pull requests to update versions automatically.
 
 ## Integrated Automated Dependency Updates
 
@@ -148,6 +152,8 @@ Run Renovate Locally
 ```bash
 docker run --rm -e RENOVATE_CONFIG_FILE=config.json -e LOG_LEVEL=debug -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
 ```
+## CodeHub Configuration
+
 
 
 [//]: # (outro)
