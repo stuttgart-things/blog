@@ -154,6 +154,14 @@ docker run --rm -e RENOVATE_CONFIG_FILE=config.json -e LOG_LEVEL=debug -v "$(pwd
 ```
 ## CodeHub Configuration
 
+Renovate Runner Onboarding:
+* add Renovate Service Account to repo or group
+* wait for next pipeline schedule to get onboarding pr
+* accept the onboarding pr in the repos
+* wait for next pipeline schedule to get dep prs
 
+## Conclusion
+
+Renovate can be used quickly with little configuration to regularly update dependencies. It helps to keep the application up to date at all times. This contributes to the error-free and reliable operation of the application.
 
 [//]: # (outro)
