@@ -162,6 +162,12 @@ vars:
           target_version: "{{ flux_version }}"
 ```
 
+## GitHub Integration
+
+
+![image](https://github.com/user-attachments/assets/952cacb2-8f05-4a37-8322-89fb5e6f8ded)
+
+
 
 ## GitLab Integration
 
@@ -199,7 +205,6 @@ docker run --rm -e RENOVATE_CONFIG_FILE=config.json -v "$(pwd)/config.json:/usr/
 
 Renovate will create an Issue called "Dependency Dashboard" in GitLab with the findings.
 
-## GitHub Integration
 
 ## Local / Testing
 
