@@ -8,7 +8,11 @@
 
 Renovate updates dependencies in the code without needing to do it manually. Renovate runs on the repo and looks for references to dependencies (both public and private). If there are newer versions available, Renovate can create pull requests to update versions automatically.
 
+[//]: # (ADD A SCREENSHOT FROM A PR)
+
 ## Integrated Automated Dependency Updates
+
+[//]: # (TABLE?)
 
 * GoLang Dependencies
 * Dockerfile
@@ -80,6 +84,84 @@ docker run --rm -v "$(pwd):/usr/src/app" renovate/renovate
 ## Custom Dependency Updates
 
 [//]: # (Add sthings ansible example)
+
+```bash
+cat <<EOF > renovate.json
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended"
+    ],
+    "customManagers": [
+        {
+            "customType": "regex",
+            "fileMatch": [
+                "\\.yaml$"
+            ],
+            "matchStrings": [
+                "\\s*(?<binName>.+)_version:\\s(?<currentValue>v?\\d+\\.\\d+\\.\\d+)\\s*#\\s*(datasource=(?<datasource>[^\\s]*))\\s*(depName=(?<depName>[^\\s]*))?\\s*"
+            ],
+            "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+            "extractVersionTemplate": "^v?(?<version>.*)$",
+            "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+            "depNameTemplate": "{{#if depName}}{{{depName}}}{{else}}{{{binName}}}{{/if}}"
+        },
+        {
+            "customType": "regex",
+            "fileMatch": ["^Dockerfile$"],
+            "matchStrings": [
+                "\\s*(?<binName>.+)_version:\\s(?<currentValue>v?\\d+\\.\\d+\\.\\d+)\\s*#\\s*(datasource=(?<datasource>[^\\s]*))\\s*(depName=(?<depName>[^\\s]*))?\\s*"
+            ],
+            "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+            "extractVersionTemplate": "^v?(?<version>.*)$",
+            "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+            "depNameTemplate": "{{#if depName}}{{{depName}}}{{else}}{{{binName}}}{{/if}}"
+      }
+    ],
+    "customDatasources": {
+      "hashicorp": {
+        "defaultRegistryUrlTemplate": "https://api.releases.hashicorp.com/v1/releases/{{packageName}}?license_class=oss",
+        "transformTemplates": [
+          "{ \"releases\": $map($, function($v) { { \"version\": $v.version, \"releaseTimestamp\": $v.timestamp_created, \"changelogUrl\": $v.url_changelog, \"sourceUrl\": $v.url_source_repository } }), \"homepage\": $[0].url_project_website, \"sourceUrl\": $[0].url_source_repository }"
+        ]
+      }
+    }
+}
+EOF
+```
+
+```
+vars:
+  - name: tools
+    file: |
+      ---
+      kind_version: 0.25.0 # datasource=github-tags depName=kubernetes-sigs/kind
+      skopeo_version: 1.14.4 # datasource=github-tags depName=lework/skopeo-binary
+      helm_version: 3.16.2 # datasource=github-tags depName=helm/helm
+      kubectl_version: v1.30.2 # datasource=github-tags depName=kubernetes/kubectl
+      k9s_version: v0.32.5 # datasource=github-tags depName=kubernetes/kubectl
+      velero_version: 1.15.0 # datasource=github-tags depName=vmware-tanzu/velero
+      kubectl_slice_version: 1.4.0 # datasource=github-tags depName=patrickdappollonio/kubectl-slice
+      helmfile_version: 0.169.1 # datasource=github-tags depName=helmfile/helmfile
+      argocd_version: 2.13.0 # datasource=github-tags depName=argoproj/argo-cd
+      flux_version: 2.4.0 # datasource=github-tags depName=fluxcd/flux2
+      glab_version: 1.48.0 # datasource=gitlab-tags depName=gitlab-org/cli
+      cilium_version: 0.16.19 # datasource=gitlab-tags depName=cilium/cilium-cli
+      dagger_version: 0.13.3 # datasource=gitlab-tags depName=dagger/dagger
+
+      bin:
+        flux:
+          bin_name: flux
+          bin_version: "{{ flux_version }}"
+          check_bin_version_before_installing: true
+          source_url: "https://github.com/fluxcd/flux2/releases/download/v{{ flux_version }}/flux_{{ flux_version }}_linux_amd64.tar.gz"
+          bin_to_copy: flux
+          to_remove: ""
+          bin_dir: "/usr/bin/flux"
+          version_cmd: "version"
+          target_version: "{{ flux_version }}"
+```
+
 
 ## GitLab Integration
 
