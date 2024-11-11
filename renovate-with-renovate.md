@@ -86,7 +86,7 @@ docker run --rm -v "$(pwd):/usr/src/app" renovate/renovate
 ```json
 {
     "platform": "gitlab",
-    "endpoint": "https://codehub.sva.de/api/v4",
+    "endpoint": "https://companyhub.de/api/v4",
     "token": ${GITAB_TOKEN} ,
     "repositories": ["Lab/stuttgart-things/homerun/homerun-gitlab-pitcher"] ,
     "dryRun": true,
@@ -124,7 +124,7 @@ Renovate will create an Issue called "Dependency Dashboard" in GitLab with the f
 ```json
 {
     "platform": "gitlab",
-    "endpoint": "https://codehub.sva.de/api/v4",
+    "endpoint": "https://companyhub.sva.de/api/v4",
     "token": ${GITLAB_TOKEN},
     "repositories": ["Lab/stuttgart-things/homerun/homerun-gitlab-pitcher"] ,
     "dryRun": true,
@@ -152,7 +152,7 @@ Run Renovate Locally
 ```bash
 docker run --rm -e RENOVATE_CONFIG_FILE=config.json -e LOG_LEVEL=debug -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
 ```
-## CodeHub Configuration
+## CompanyHub Configuration
 
 Renovate Runner Onboarding:
 * add Renovate Service Account to repo or group
