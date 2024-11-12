@@ -224,24 +224,8 @@ Renovate will create an Issue called "Dependency Dashboard" in GitLab with the f
     "platform": "gitlab",
     "endpoint": "https://companyhub.sva.de/api/v4",
     "token": ${GITLAB_TOKEN},
-    "repositories": ["Lab/stuttgart-things/homerun/homerun-gitlab-pitcher"] ,
-    "dryRun": true,
-    "hostRules": [
-      {
-        "hostType": "docker",
-        "matchHost": ${HOST},
-        "username": ${USER},
-        "password": ${PASSWORD} 
-      }
-    ],
-    "logLevel": "debug",  // Set to debug for detailed logs
-    // "packageRules": [
-    //   {
-    //     "matchPackageNames": ["*"],
-    //     "enabled": true,
-    //     "groupName": "All Updates" // Optional: To group all updates together
-    //   }
-    // ]
+    "repositories": ["<YOUR_REPOSITORY>"] ,
+    "dryRun": true
   }
 ```
 
