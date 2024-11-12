@@ -171,31 +171,39 @@ vars:
 
 ## GitLab Integration
 
+### GitLab.com
+
+```json
+# config.json
+
+{
+    "platform": "gitlab",
+    "endpoint": "https://gitlab.com/api/v4",
+    "token": "<TOKEN>",
+    "repositories": ["<YOUR_GITLAB_REPOSITORY>"] ,
+    "dryRun": "false"
+  }
+```
+
+Run Renovate
+
+```bash
+docker run --rm -e RENOVATE_CONFIG_FILE=config.json -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
+```
+
+Renovate will create an Issue called "Dependency Dashboard" in GitLab with the findings.
+
+### self-hosted GitLab
+
 ```json
 # config.json
 
 {
     "platform": "gitlab",
     "endpoint": "https://companyhub.de/api/v4",
-    "token": ${GITAB_TOKEN} ,
-    "repositories": ["Lab/stuttgart-things/homerun/homerun-gitlab-pitcher"] ,
-    "dryRun": true,
-    "hostRules": [
-      {
-        "hostType": "docker",
-        "matchHost": ${HOST},
-        "username": ${USER},
-        "password": ${PASSWORD} 
-      }
-    ],
-    "logLevel": "info",  // Set to debug for detailed logs
-    // "packageRules": [
-    //   {
-    //     "matchPackageNames": ["*"],
-    //     "enabled": true,
-    //     "groupName": "All Updates" // Optional: To group all updates together
-    //   }
-    // ]
+    "token": "<TOKEN>",
+    "repositories": ["<YOUR_REPOSITORY>"] ,
+    "dryRun": "full"
   }
 ```
 
