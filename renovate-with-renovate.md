@@ -242,6 +242,32 @@ Renovate Runner Onboarding:
 * accept the onboarding pr in the repos
 * wait for next pipeline schedule to get dep prs
 
+  
+## Renovate in CI/CD Pipeline (GitLab)
+
+```yaml
+#.gitlab-ci.yml
+
+stages:
+  - dependency_updates
+
+renovate:
+  image: renovate/renovate:slim
+  stage: dependency_updates
+  variables:
+    RENOVATE_PLATFORM: gitlab
+    RENOVATE_ENDPOINT: $CI_API_V4_URL
+    RENOVATE_AUTODISCOVER: "true"
+    RENOVATE_BINARY_SOURCE: install
+    LOG_LEVEL: debug
+  tags:
+    - docker
+  only:
+    - schedules
+  script:
+    - renovate $RENOVATE_EXTRA_FLAGS
+```
+
 ## Conclusion
 
 Renovate can be used quickly with little configuration to regularly update dependencies. It helps to keep the application up to date at all times. This contributes to the error-free and reliable operation of the application.
