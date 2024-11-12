@@ -172,6 +172,8 @@ vars:
 ## GitLab Integration
 
 ```json
+# config.json
+
 {
     "platform": "gitlab",
     "endpoint": "https://companyhub.de/api/v4",
@@ -209,6 +211,7 @@ Renovate will create an Issue called "Dependency Dashboard" in GitLab with the f
 ## Local / Testing
 
 ```json
+# config.json
 {
     "platform": "gitlab",
     "endpoint": "https://companyhub.sva.de/api/v4",
