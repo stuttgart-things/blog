@@ -47,6 +47,24 @@ Finding dependencies in “custom file formats” that are not supported by the 
 * ArgoCD Dependencies (Preview Envs?)
 
 ## RENOVATE vs. DEPANDABOT
+
+
+### Table of features
+
+In the table bellow some of the main feature of Renovate and Dependabot are compared:
+
+| Feature                                   | Renovate                                                                                                                       | Dependabot                                                                                                                                                                   |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dependency Dashboard                      | Yes                                                                                                                            | No                                                                                                                                                                           |
+| Officially supported platforms            | GitHub, GitLab, Bitbucket, Azure, Gitea                                       | GitHub only                                                                                                                                                                  |
+| Show changelogs                           | Yes                                                                                                                            | Yes                                                                                                                                                                          |
+| Built-in to GitHub                        | No, requires app or self-hosting                                                                                               | Yes                                                                                                                                                                          |
+| Scheduling                                | By default, Renovate runs as often as it is allowed to | `daily`, `weekly`, `monthly`                                                                                                                                            |
+
+                                                                    
+Renovate offers a broader spectrum of functionality. Its package manager support, customization for complex project needs, and seamless integration with external vulnerability databases empower developers to implement a proactive security posture. Additionally, Renovate’s granular pull request control streamlines code review and collaboration.
+
+When should one prefer renovate?
 * Large projects with complex dependencies or monorepos.
 * Cross-platform support requirements, or when using multiple package managers.
 * Teams that want more control over scheduling, grouping, and merging of dependency updates.
