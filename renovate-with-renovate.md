@@ -6,9 +6,17 @@
 
 ## Introduction
 
-Renovate updates dependencies in the code without needing to do it manually. Renovate runs on the repo and looks for references to dependencies (both public and private). If there are newer versions available, Renovate can create pull requests to update versions automatically.
+Renovate updates dependencies in the code without needing to do it manually. Renovate runs on the repo and looks for references to dependencies (both public and private). If there are newer versions available, Renovate can create pull requests to update versions automatically. Rennovate is a self-hosted tool that you run in your own CI/CD pipeline, works with GitHub, GitLab, and many more.
+
+Why use Renovate?
+Over trime dependencies become obsolete and insecure. Via a list of PRs Renovate creates transparency with regard to outdated dependencies. This makes dependencies plannable.
+
+Renovate only generates PRs for obsolete direct dependencies, not for indirect / transitive dependencies. Overwriting transitive deps often technically difficult or impossible. And dependency update is the task of the respective maintainer. But there are dedicated tools for detecting unsafe dependencies: OSS Review Toolkit, Trivy, OSV Scanner,
+Dependabot Alerts, etc.
 
 [//]: # (ADD A SCREENSHOT FROM A PR)
+
+## Post Upgrade Tasks
 
 ## Integrated Automated Dependency Updates
 
