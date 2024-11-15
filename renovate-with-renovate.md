@@ -9,12 +9,12 @@
 Nowadays, an application quickly contains several dozen libraries, also known as dependencies. These regularly publish new versions, sometimes several times a week. 
 Dependencies should be updated regularly in order to benefit promptly from the advantages of a new version. The older the dependencies are, the more time-consuming it is to update them to the latest version. This is because the changelog grows and the probability of breaking changes increases. Renovate is a tool that can take over the updating of dependencies. 
 
-Renovate updates dependencies in the code without needing to do it manually. Renovate runs on the repo and looks for references to dependencies (both public and private). If there are newer versions available, Renovate can create pull requests to update versions automatically. Rennovate is a self-hosted tool that you run in your own CI/CD pipeline, works with GitHub, GitLab, and many more.
+Renovate updates dependencies in the code without needing to do it manually. Renovate runs on the repo and looks for references to dependencies (both public and private). If there are newer versions available, Renovate can create pull requests to update versions automatically. Rennovate is a self-hosted tool that you run in your own CI/CD pipeline and works with GitHub, GitLab, and many more.
 
 Why use Renovate?
 Over time dependencies become obsolete and insecure. Via a list of PRs Renovate creates transparency with regard to outdated dependencies. This makes dependencies plannable.
 
-Renovate only generates PRs for obsolete direct dependencies, not for indirect / transitive dependencies. Overwriting transitive deps often technically difficult or impossible. And dependency update is the task of the respective maintainer. But there are dedicated tools for detecting unsafe dependencies: OSS Review Toolkit, Trivy, OSV Scanner,
+Renovate only generates PRs for obsolete direct dependencies, not for indirect / transitive dependencies. Overwriting transitive deps often technically difficult or impossible. An dependency update is the task of the respective maintainer. But there are dedicated tools for detecting unsafe dependencies: OSS Review Toolkit, Trivy, OSV Scanner,
 Dependabot Alerts, etc.
 
 ### Initial Merge Request for configuring Renovate in the Repo:
@@ -331,6 +331,6 @@ RENOVATE_BINARY_SOURCE: Renovate uses this to install third-party tools that it 
 
 ## Conclusion
 
-Renovate can be used quickly with little configuration to regularly update dependencies. It helps to keep the application up to date at all times. This contributes to the error-free and reliable operation of the application.
+Renovate can be used quickly with little configuration to regularly update dependencies. This is especially important to eliminate security vulnerabilities quickly. It furthermore helps to keep the application up to date at all times. This contributes to the error-free and reliable operation of the application.
 
 [//]: # (outro)
