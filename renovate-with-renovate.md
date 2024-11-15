@@ -29,6 +29,12 @@ This screenshot shows a merge request created by Renovate for a detected depende
 
 <img title="a title" alt="Alt text" src="example_mr.png" height="500px">
 
+### Dependency Dashboard:
+
+The Dependency Dashboard lists all currently open MRs. It also contains a list of all detected dependencies and is also used to communicate any problems found. For example, if Renovate cannot resolve certain dependencies or if a misconfiguration is detected, these are reported here. The dashboard can also be used to interact with the bot.
+
+<img title="a title" alt="Alt text" src="Dependency_Dashboard.png" height="500px">
+
 ### Post Upgrade Tasks
 
 With Post Upgrade Tasks Renovate can perform further tasks when creating PRs (any shell commands possible), for example notification of the team via mail or execute linting.
