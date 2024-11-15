@@ -6,6 +6,9 @@
 
 ## Introduction
 
+Nowadays, an application quickly contains several dozen libraries, also known as dependencies. These regularly publish new versions, sometimes several times a week. 
+Dependencies should be updated regularly in order to benefit promptly from the advantages of a new version. The older the dependencies are, the more time-consuming it is to update them to the latest version. This is because the changelog grows and the probability of breaking changes increases. Renovate is a tool that can take over the updating of dependencies. 
+
 Renovate updates dependencies in the code without needing to do it manually. Renovate runs on the repo and looks for references to dependencies (both public and private). If there are newer versions available, Renovate can create pull requests to update versions automatically. Rennovate is a self-hosted tool that you run in your own CI/CD pipeline, works with GitHub, GitLab, and many more.
 
 Why use Renovate?
@@ -193,6 +196,8 @@ vars:
 
 ## GitLab Integration
 
+There are various ways in which Renovate can access a repository or several repositories. If Renovate should only run in one repository, a GitLab access token with api and write_repository access is sufficient. If Renovate is to take care of several repositories, it is advisable to create a Renovate user in GitLab and add this user as a member (maintainer or developer) to the relevant projects.
+
 ### GitLab.com
 
 ```json
@@ -289,6 +294,9 @@ renovate:
   script:
     - renovate $RENOVATE_EXTRA_FLAGS
 ```
+
+RENOVATE_AUTODISCOVER: This flag specifies that Renovate should automatically search all repositories to which it has access for dependencies.
+RENOVATE_BINARY_SOURCE: Renovate uses this to install third-party tools that it needs to be able to perform updates, e.g. npm, yarn, ...
 
 ## Conclusion
 
