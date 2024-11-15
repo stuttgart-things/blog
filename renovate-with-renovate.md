@@ -19,9 +19,13 @@ Dependabot Alerts, etc.
 
 ### Initial Merge Request for configuring Renovate in the Repo:
 
+In the screenshot bellow the initial merge request to configure renovate in the repo is shown. After merging the bots runs in the defined schedule to discover dependencies.
+
 <img title="a title" alt="Alt text" src="Configure_RenovateMR.png" height="500px">
 
 ### Example Merge Request for dependency created by Renovate:
+
+This screenshot shows a merge request created by Renovate for a detected dependency. After it has been merged the version will be updated.
 
 <img title="a title" alt="Alt text" src="example_mr.png" height="500px">
 
@@ -263,6 +267,8 @@ Renovate will create an Issue called "Dependency Dashboard" in GitLab with the f
 
 ## Local / Testing
 
+With the `dry-run` option Renovate runs only locally without creating Merge Requests. If the LOG_LEVEL is set to debug, the detected dependencies are displayed in the console.
+
 ```json
 # config.json
 {
@@ -270,7 +276,7 @@ Renovate will create an Issue called "Dependency Dashboard" in GitLab with the f
     "endpoint": "https://companyhub.sva.de/api/v4",
     "token": ${GITLAB_TOKEN},
     "repositories": ["<YOUR_REPOSITORY>"] ,
-    "dryRun": true
+    "dryRun": "full"
   }
 ```
 
@@ -285,7 +291,7 @@ Renovate Runner Onboarding:
 * add Renovate Service Account to repo or group
 * wait for next pipeline schedule to get onboarding pr
 * accept the onboarding pr in the repos
-* wait for next pipeline schedule to get dep prs
+* wait for next pipeline schedule to get dependency prs
 
   
 ## Renovate in CI/CD Pipeline (GitLab)
