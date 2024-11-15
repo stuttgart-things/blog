@@ -16,7 +16,15 @@ Dependabot Alerts, etc.
 
 [//]: # (ADD A SCREENSHOT FROM A PR)
 
-## Post Upgrade Tasks
+### Post Upgrade Tasks
+
+Renovate should perform further tasks when creating PRs (any shell commands possible), for example notification of the team via mail or execute linting.
+
+An alternative to Post Upgrade Tasks are Post Update Options. That comes with 12 preconfigured actions (npm/yarn, go, Ruby bundler, Helm), e.g. “go mod tidy” or “helm dependency update”.
+
+### RegEx Manager
+
+Finding dependencies in “custom file formats” that are not supported by the supplied managers. For example shell scripts (curl ...), or RUN in a Dockerfile or GitHub Actions parameters or custom JSON/YAML file formats.
 
 ## Integrated Automated Dependency Updates
 
