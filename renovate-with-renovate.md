@@ -19,7 +19,7 @@ Dependabot Alerts, etc.
 
 ### Initial Merge Request for configuring Renovate in the Repo:
 
-In the screenshot bellow the initial merge request to configure renovate in the repo is shown. After merging the bots runs in the defined schedule to discover dependencies.
+In the screenshot bellow the initial merge request to configure renovate in the repo is shown. After merging the bot runs in the defined schedule to discover dependencies.
 
 <img title="a title" alt="Alt text" src="Configure_RenovateMR.png" height="500px">
 
@@ -31,13 +31,13 @@ This screenshot shows a merge request created by Renovate for a detected depende
 
 ### Post Upgrade Tasks
 
-Renovate should perform further tasks when creating PRs (any shell commands possible), for example notification of the team via mail or execute linting.
+With Post Upgrade Tasks Renovate can perform further tasks when creating PRs (any shell commands possible), for example notification of the team via mail or execute linting.
 
-An alternative to Post Upgrade Tasks are Post Update Options. That comes with 12 preconfigured actions (npm/yarn, go, Ruby bundler, Helm), e.g. “go mod tidy” or “helm dependency update”.
+An alternative to Post Upgrade Tasks are Post Update Options, which comes with 12 preconfigured actions (npm/yarn, go, Ruby bundler, Helm), e.g. “go mod tidy” or “helm dependency update”.
 
 ### RegEx Manager
 
-Finding dependencies in “custom file formats” that are not supported by the supplied managers. For example shell scripts (curl ...), or RUN in a Dockerfile or GitHub Actions parameters or custom JSON/YAML file formats.
+With the help of the RegEx Manager dependencies in custom file formats that are not supported by the supplied managers can be found. For example shell scripts (curl ...), or RUN in a Dockerfile or GitHub Actions parameters or custom JSON/YAML file formats.
 
 ## Integrated Automated Dependency Updates
 
