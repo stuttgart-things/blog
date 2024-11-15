@@ -273,7 +273,7 @@ Renovate will create an Issue called "Dependency Dashboard" in GitLab with the f
 
 ## Local / Testing
 
-With the `dry-run` option Renovate runs only locally without creating Merge Requests. If the LOG_LEVEL is set to debug, the detected dependencies are displayed in the console.
+With the `dry-run` option Renovate runs only locally without creating Merge Requests. If the LOG_LEVEL is set to `debug`, the detected dependencies are displayed in the console.
 
 ```json
 # config.json
@@ -302,6 +302,10 @@ Renovate Runner Onboarding:
   
 ## Renovate in CI/CD Pipeline (GitLab)
 
+If Renovate is to take care of several repositories an extra repo for the renovate pipeline can be created.
+
+In the following example renovate runs in a Docker Container. In the CI/CD settings in GitLab the scheduler can be configured to set the intervall pattern.
+
 ```yaml
 #.gitlab-ci.yml
 
@@ -324,10 +328,11 @@ renovate:
   script:
     - renovate $RENOVATE_EXTRA_FLAGS
 ```
+The following environment variabels can bet set:
+* RENOVATE_AUTODISCOVER: This flag specifies that Renovate should automatically search all repositories to which it has access for dependencies.
+* RENOVATE_BINARY_SOURCE: Renovate uses this to install third-party tools that it needs to be able to perform updates, e.g. npm, yarn, ...
 
-RENOVATE_AUTODISCOVER: This flag specifies that Renovate should automatically search all repositories to which it has access for dependencies.
-
-RENOVATE_BINARY_SOURCE: Renovate uses this to install third-party tools that it needs to be able to perform updates, e.g. npm, yarn, ...
+After creating the pipeline the Renovate user can be added as maintainer or developer in a repository to activate Renovate. If the environment variable Autodiscover is set to true in the Renovate job, Renovate will automatically find and analyze the repository the next time it runs. In a renovate.json the configuration for the repository can be added.
 
 ## Conclusion
 
