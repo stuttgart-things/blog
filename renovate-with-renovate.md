@@ -14,7 +14,13 @@ Over trime dependencies become obsolete and insecure. Via a list of PRs Renovate
 Renovate only generates PRs for obsolete direct dependencies, not for indirect / transitive dependencies. Overwriting transitive deps often technically difficult or impossible. And dependency update is the task of the respective maintainer. But there are dedicated tools for detecting unsafe dependencies: OSS Review Toolkit, Trivy, OSV Scanner,
 Dependabot Alerts, etc.
 
-[//]: # (ADD A SCREENSHOT FROM A PR)
+### Initial Merge Request for configuring Renovate in the Repo:
+
+<img title="a title" alt="Alt text" src="Configure_RenovateMR.png" height="500px">
+
+### Example Merge Request for dependency created by Renovate:
+
+<img title="a title" alt="Alt text" src="example_mr.png" height="500px">
 
 ### Post Upgrade Tasks
 
