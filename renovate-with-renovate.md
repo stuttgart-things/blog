@@ -138,7 +138,7 @@ docker run --rm -v "$(pwd):/usr/src/app" renovate/renovate
 
 For specialized dependencies update rules (which may not fit standard update workflows) the renoate concepts customManagers and customDatasources can be used.
 
-In the following (shortend) example we want to get updates from github releases for an ansible playbook which can be used for installing binaries. the comment after the version is used as a marker for renovate for inserting an version update in the given structure/variable.
+In the following (shortend) example we want to get updates from github and gitlab releases for an ansible playbook which can be used for installing binaries. the comment after the version is used as a marker for renovate for inserting an version update in the given structure/variable.
 
 ```
 vars:
@@ -149,11 +149,6 @@ vars:
       skopeo_version: 1.14.4 # datasource=github-tags depName=lework/skopeo-binary
       helm_version: 3.16.2 # datasource=github-tags depName=helm/helm
       kubectl_version: v1.30.2 # datasource=github-tags depName=kubernetes/kubectl
-      k9s_version: v0.32.5 # datasource=github-tags depName=kubernetes/kubectl
-      velero_version: 1.15.0 # datasource=github-tags depName=vmware-tanzu/velero
-      kubectl_slice_version: 1.4.0 # datasource=github-tags depName=patrickdappollonio/kubectl-slice
-      helmfile_version: 0.169.1 # datasource=github-tags depName=helmfile/helmfile
-      argocd_version: 2.13.0 # datasource=github-tags depName=argoproj/argo-cd
       flux_version: 2.4.0 # datasource=github-tags depName=fluxcd/flux2
       glab_version: 1.48.0 # datasource=gitlab-tags depName=gitlab-org/cli
       cilium_version: 0.16.19 # datasource=gitlab-tags depName=cilium/cilium-cli
@@ -208,9 +203,15 @@ cat <<EOF > renovate.json
 EOF
 ```
 
-
-
 ## GitHub Integration
+
+The easiest way of integrate Renovate into GitHub:
+
+* Visit the Renovate GitHub App page.
+* Click Install and select the repositories or organizations where you want to enable Renovate.
+* Renovate will create a configuration file (renovate.json) in your repository or use the default settings.
+
+Add a renovate.json to your repository to customize Renovate's behavior
 
 
 ![image](https://github.com/user-attachments/assets/952cacb2-8f05-4a37-8322-89fb5e6f8ded)
