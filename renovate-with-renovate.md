@@ -134,54 +134,11 @@ docker run --rm -v "$(pwd):/usr/src/app" renovate/renovate
 ```
 
 
-## Custom Dependency Updates
+## Define Custom Dependency Updates
 
-[//]: # (Add sthings ansible example)
+For specialized dependencies update rules (which may not fit standard update workflows) the renoate concepts customManagers and customDatasources can be used.
 
-```bash
-cat <<EOF > renovate.json
-{
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "config:recommended"
-    ],
-    "customManagers": [
-        {
-            "customType": "regex",
-            "fileMatch": [
-                "\\.yaml$"
-            ],
-            "matchStrings": [
-                "\\s*(?<binName>.+)_version:\\s(?<currentValue>v?\\d+\\.\\d+\\.\\d+)\\s*#\\s*(datasource=(?<datasource>[^\\s]*))\\s*(depName=(?<depName>[^\\s]*))?\\s*"
-            ],
-            "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
-            "extractVersionTemplate": "^v?(?<version>.*)$",
-            "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-            "depNameTemplate": "{{#if depName}}{{{depName}}}{{else}}{{{binName}}}{{/if}}"
-        },
-        {
-            "customType": "regex",
-            "fileMatch": ["^Dockerfile$"],
-            "matchStrings": [
-                "\\s*(?<binName>.+)_version:\\s(?<currentValue>v?\\d+\\.\\d+\\.\\d+)\\s*#\\s*(datasource=(?<datasource>[^\\s]*))\\s*(depName=(?<depName>[^\\s]*))?\\s*"
-            ],
-            "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
-            "extractVersionTemplate": "^v?(?<version>.*)$",
-            "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-            "depNameTemplate": "{{#if depName}}{{{depName}}}{{else}}{{{binName}}}{{/if}}"
-      }
-    ],
-    "customDatasources": {
-      "hashicorp": {
-        "defaultRegistryUrlTemplate": "https://api.releases.hashicorp.com/v1/releases/{{packageName}}?license_class=oss",
-        "transformTemplates": [
-          "{ \"releases\": $map($, function($v) { { \"version\": $v.version, \"releaseTimestamp\": $v.timestamp_created, \"changelogUrl\": $v.url_changelog, \"sourceUrl\": $v.url_source_repository } }), \"homepage\": $[0].url_project_website, \"sourceUrl\": $[0].url_source_repository }"
-        ]
-      }
-    }
-}
-EOF
-```
+In the following (shortend) example we want to get updates from github releases for an ansible playbook which can be used for installing binaries. the comment after the version is used as a marker for renovate for inserting an version update in the given structure/variable.
 
 ```
 vars:
@@ -214,6 +171,44 @@ vars:
           version_cmd: "version"
           target_version: "{{ flux_version }}"
 ```
+
+the following configuration shows how a regex based customManager for the custom ansible format can be defined. the customDatasource is used for getting updates from hashicorp releases (which will be published on their api).
+
+```bash
+cat <<EOF > renovate.json
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended"
+    ],
+    "customManagers": [
+        {
+            "customType": "regex",
+            "fileMatch": [
+                "\\.yaml$"
+            ],
+            "matchStrings": [
+                "\\s*(?<binName>.+)_version:\\s(?<currentValue>v?\\d+\\.\\d+\\.\\d+)\\s*#\\s*(datasource=(?<datasource>[^\\s]*))\\s*(depName=(?<depName>[^\\s]*))?\\s*"
+            ],
+            "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+            "extractVersionTemplate": "^v?(?<version>.*)$",
+            "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+            "depNameTemplate": "{{#if depName}}{{{depName}}}{{else}}{{{binName}}}{{/if}}"
+        },
+    ],
+    "customDatasources": {
+      "hashicorp": {
+        "defaultRegistryUrlTemplate": "https://api.releases.hashicorp.com/v1/releases/{{packageName}}?license_class=oss",
+        "transformTemplates": [
+          "{ \"releases\": $map($, function($v) { { \"version\": $v.version, \"releaseTimestamp\": $v.timestamp_created, \"changelogUrl\": $v.url_changelog, \"sourceUrl\": $v.url_source_repository } }), \"homepage\": $[0].url_project_website, \"sourceUrl\": $[0].url_source_repository }"
+        ]
+      }
+    }
+}
+EOF
+```
+
+
 
 ## GitHub Integration
 
