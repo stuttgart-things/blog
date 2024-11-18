@@ -21,19 +21,22 @@ Dependabot Alerts, etc.
 
 In the screenshot bellow the initial merge request to configure renovate in the repo is shown. After merging the bot runs in the defined schedule to discover dependencies.
 
-<img title="a title" alt="Alt text" src="Configure_RenovateMR.png" height="500px">
+![Configure_RenovateMR](https://github.com/user-attachments/assets/251f9b12-fbe6-47fc-8789-3c842324377c)
+
 
 ### Example Merge Request for dependency created by Renovate:
 
 This screenshot shows a merge request created by Renovate for a detected dependency. After it has been merged the version will be updated.
 
-<img title="a title" alt="Alt text" src="example_mr.png" height="500px">
+![example_mr](https://github.com/user-attachments/assets/d5eca45b-0b48-4a0e-a212-91cafd4c3822)
+
 
 ### Dependency Dashboard:
 
 The Dependency Dashboard lists all currently open MRs. It also contains a list of all detected dependencies and is also used to communicate any problems found. For example, if Renovate cannot resolve certain dependencies or if a misconfiguration is detected, these are reported here. The dashboard can also be used to interact with the bot.
 
-<img title="a title" alt="Alt text" src="Dependency_Dashboard.png" height="500px">
+![Dependency_Dashboard](https://github.com/user-attachments/assets/a482e889-a287-4e9e-9a0e-fe2eac0acff5)
+
 
 ### Post Upgrade Tasks
 
