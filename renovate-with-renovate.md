@@ -6,16 +6,116 @@
 
 ## Introduction
 
-Nowadays, an application quickly contains several dozen libraries, also known as dependencies. These regularly publish new versions, sometimes several times a week. 
-Dependencies should be updated regularly in order to benefit promptly from the advantages of a new version. The older the dependencies are, the more time-consuming it is to update them to the latest version. This is because the changelog grows and the probability of breaking changes increases. Renovate is a tool that can take over the updating of dependencies. 
+Nowadays, an application quickly contains several dozen libraries, also known as dependencies. These regularly publish new versions, sometimes several times a week. Dependencies should be updated regularly in order to benefit promptly from the advantages of a new version. 
 
-Renovate updates dependencies in the code without needing to do it manually. Renovate runs on the repo and looks for references to dependencies (both public and private). If there are newer versions available, Renovate can create pull requests to update versions automatically. Rennovate is a self-hosted tool that you run in your own CI/CD pipeline and works with GitHub, GitLab, and many more.
+Renovate updates dependencies in the code without needing to do it manually and thus makes dependencies planable. Renovate runs on the repository and looks for references to dependencies (both public and private). If there are newer versions available, Renovate can create pull requests to update versions automatically.
 
-Why use Renovate?
-Over time dependencies become obsolete and insecure. Via a list of PRs Renovate creates transparency with regard to outdated dependencies. This makes dependencies plannable.
+Renovate is a self-hosted tool that runs in CI/CD pipelines and works with GitHub, GitLab, and many more. In this article we focus on the setup in GitHub and GitLab after comparing Renovate Bot with Depandabot. We will also give some examples for defining custom dependency updates.
 
-Renovate only generates PRs for obsolete direct dependencies, not for indirect / transitive dependencies. Overwriting transitive deps often technically difficult or impossible. An dependency update is the task of the respective maintainer. But there are dedicated tools for detecting unsafe dependencies: OSS Review Toolkit, Trivy, OSV Scanner,
-Dependabot Alerts, etc.
+## RENOVATE vs. DEPANDABOT
+
+In addition to Renovate, Dependabot is also a useful and popular tool that can automate the updating and patching of software dependencies. The following section compares the tools and describes when it makes sense to use Renovate.
+
+In the table bellow some of the main features of Renovate and Dependabot are listed:
+
+| Feature                                   | Renovate                                                                                                                       | Dependabot                                                                                                                                                                   |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dependency Dashboard                      | Yes                                                                                                                            | No                                                                                                                                                                           |
+| Officially supported platforms            | GitHub, GitLab, Bitbucket, Azure, Gitea                                       | GitHub only                                                                                                                                                                  |
+| Show changelogs                           | Yes                                                                                                                            | Yes                                                                                                                                                                          |
+| Built-in to GitHub                        | No, requires app or self-hosting                                                                                               | Yes                                                                                                                                                                          |
+| Scheduling                                | By default, Renovate runs as often as it is allowed to | `daily`, `weekly`, `monthly`                                                                                                                                            |
+
+                                                                    
+When to prefer Renovate?
+
+Large projects with complex dependencies or monorepos.
+Cross-platform support requirements, or when using multiple package managers.
+Teams that want more control over scheduling, grouping, and merging of dependency updates.
+Organizations that need self-hosted options or more control over security and compliance.
+Teams that prefer advanced automation and detailed changelogs.
+
+## SETUP RENOVATE
+
+In the following, it is shown how to set up Renovate and how to start a so-called dry-run, to preview the behavior of Renovate in logs, without making any changes to the repository files.
+
+Two files are of central importance for the setup of Renovate: renovate.json and config.json.
+
+renovate.json is a repository-specific configuration file. It defines how Renovate behaves for a particular repository.
+
+Bellow is a basic setup of the renovate.json file:
+
+
+
+```json
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ]
+}
+```
+
+config.json is a global configuration file for Renovate, typically used when running Renovate self-hosted. It defines the default behavior for all repositories Renovate manages.
+
+An easy way for getting started with renovate is to create a configuration file and to perform a dry run on the source code / repository. In the next section example config.json files for Renovate dry-run are given.
+
+## RENOVATE DRY-RUN
+With the dry-run option Renovate runs only locally without creating Merge Requests. If the LOG_LEVEL is set to debug, the detected dependencies are displayed in the console.
+
+### CodeHub (SVA) Example
+
+This is a basic config.json file to setup Renovate dry-run for a SVA Codehub Repository:
+
+```json
+{
+    "platform": "gitlab",
+    "endpoint": "https://codehub.sva.de/api/v4",
+    "token": "<YOUR_TOKEN>",
+    "repositories": ["<YOUR_REPO>"],
+    "dryRun": "full"
+  }
+  ```
+
+After creating the file the Renovate Bot can be started with docker with the following command:
+
+```json
+docker run --rm -e RENOVATE_CONFIG_FILE=config.json \
+-e LOG_LEVEL=debug \
+-v "$(pwd)/config.json:/usr/src/app/config.json" \
+renovate/renovate
+ ```
+
+### GitHub Example
+
+Renovate can also be setup in GitHub. Here is a basic config.json file for dry-run, the "service-golang" is just an example:
+
+```json
+{
+    "repositories": ["gbeletti/service-golang"],
+    "token": "<YOUR_TOKEN>",
+    "dryRun" : "full"
+ 
+}
+ ```
+
+It can also be started with docker with the following command:
+
+```json
+docker run --rm -v "$(pwd)/config.json:/opt/renovate/config.json" \
+-e RENOVATE_PLATFORM=github \
+-e LOG_LEVEL=debug \
+-e RENOVATE_CONFIG_FILE=/opt/renovate/config.json \
+renovate/renovate
+ ```
+
+## Integration of Renovate in GitLab
+
+In the following section, example merge requests and issues created by Renovate in GitLab are shown.
+
+In the screenshot bellow the initial merge request to configure Renovate in a repository is shown. After merging the bot runs in the defined schedule to discover dependencies.
+
+
 
 ### Initial Merge Request for configuring Renovate in the Repo:
 
@@ -59,30 +159,6 @@ With the help of the RegEx Manager dependencies in custom file formats that are 
 * Flux Dependencies (Preview Envs?)
 * ArgoCD Dependencies (Preview Envs?)
 
-## RENOVATE vs. DEPANDABOT
-
-
-### Table of features
-
-In the table bellow some of the main feature of Renovate and Dependabot are compared:
-
-| Feature                                   | Renovate                                                                                                                       | Dependabot                                                                                                                                                                   |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Dependency Dashboard                      | Yes                                                                                                                            | No                                                                                                                                                                           |
-| Officially supported platforms            | GitHub, GitLab, Bitbucket, Azure, Gitea                                       | GitHub only                                                                                                                                                                  |
-| Show changelogs                           | Yes                                                                                                                            | Yes                                                                                                                                                                          |
-| Built-in to GitHub                        | No, requires app or self-hosting                                                                                               | Yes                                                                                                                                                                          |
-| Scheduling                                | By default, Renovate runs as often as it is allowed to | `daily`, `weekly`, `monthly`                                                                                                                                            |
-
-                                                                    
-Renovate offers a broader spectrum of functionality. Its package manager support, customization for complex project needs, and seamless integration with external vulnerability databases empower developers to implement a proactive security posture. Additionally, Renovate’s granular pull request control streamlines code review and collaboration.
-
-When should one prefer renovate?
-* Large projects with complex dependencies or monorepos.
-* Cross-platform support requirements, or when using multiple package managers.
-* Teams that want more control over scheduling, grouping, and merging of dependency updates.
-* Organizations that need self-hosted options or more control over security and compliance.
-* Teams that prefer advanced automation and detailed changelogs.
 
 ## RENOVATE DRY-RUN
 
@@ -104,37 +180,7 @@ renovate/renovate
 
 https://github.com/renovatebot/renovate/blob/main/docs/usage/examples/self-hosting.md
 
-## SETUP RENOVATE
 
-1. Add Renovate to Your Repository
-First, enable Renovate for your repository. If you're using GitHub, GitLab, or Bitbucket, this usually involves adding the Renovate app to your repository through the platform’s marketplace or Renovate’s official website.
-
-2. Create a renovate.json configuration file in the root of your repository to tell Renovate how to handle updates. Here’s a basic setup for a Docker-based project:
-
-```json
-{
-  "extends": [
-    "config:base"
-  ],
-  "dockerfile": {
-    "fileMatch": ["Dockerfile", "Dockerfile.*"],
-    "enabled": true
-  },
-  "packageRules": [
-    {
-      "managers": ["dockerfile"],
-      "matchDatasources": ["docker"],
-      "groupName": "docker dependencies"
-    }
-  ]
-}
-```
-
-3. Run Renovate Locally (Optional)
-
-```bash
-docker run --rm -v "$(pwd):/usr/src/app" renovate/renovate
-```
 
 
 ## Define Custom Dependency Updates
