@@ -115,12 +115,6 @@ In the following section, example merge requests and issues created by Renovate 
 
 In the screenshot bellow the initial merge request to configure Renovate in a repository is shown. After merging the bot runs in the defined schedule to discover dependencies.
 
-
-
-### Initial Merge Request for configuring Renovate in the Repo:
-
-In the screenshot bellow the initial merge request to configure renovate in the repo is shown. After merging the bot runs in the defined schedule to discover dependencies.
-
 ![Configure_RenovateMR](https://github.com/user-attachments/assets/251f9b12-fbe6-47fc-8789-3c842324377c)
 
 
@@ -144,9 +138,11 @@ With Post Upgrade Tasks Renovate can perform further tasks when creating PRs (an
 
 An alternative to Post Upgrade Tasks are Post Update Options, which comes with 12 preconfigured actions (npm/yarn, go, Ruby bundler, Helm), e.g. “go mod tidy” or “helm dependency update”.
 
+
 ### RegEx Manager
 
 With the help of the RegEx Manager dependencies in custom file formats that are not supported by the supplied managers can be found. For example shell scripts (curl ...), or RUN in a Dockerfile or GitHub Actions parameters or custom JSON/YAML file formats.
+
 
 ## Integrated Automated Dependency Updates
 
