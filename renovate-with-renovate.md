@@ -35,6 +35,15 @@ Teams that want more control over scheduling, grouping, and merging of dependenc
 Organizations that need self-hosted options or more control over security and compliance.
 Teams that prefer advanced automation and detailed changelogs.
 
+## Integrated Automated Dependency Updates
+
+* GoLang Dependencies
+* Dockerfile
+* Helm-Charts - Public
+* OCI Dependencies [HELM](https://docs.renovatebot.com/modules/manager/helmv3)
+* Flux Dependencies 
+* ArgoCD Dependencies 
+
 ## SETUP RENOVATE
 
 In the following, it is shown how to set up Renovate and how to start a so-called dry-run, to preview the behavior of Renovate in logs, without making any changes to the repository files.
@@ -63,14 +72,14 @@ An easy way for getting started with renovate is to create a configuration file 
 ## RENOVATE DRY-RUN
 With the dry-run option Renovate runs only locally without creating Merge Requests. If the LOG_LEVEL is set to debug, the detected dependencies are displayed in the console.
 
-### CodeHub (SVA) Example
+### CompanyHub Example
 
-This is a basic config.json file to setup Renovate dry-run for a SVA Codehub Repository:
+This is a basic config.json file to setup Renovate dry-run for a CompanyHub Repository:
 
 ```json
 {
     "platform": "gitlab",
-    "endpoint": "https://codehub.sva.de/api/v4",
+    "endpoint": "https://companyhub.de/api/v4",
     "token": "<YOUR_TOKEN>",
     "repositories": ["<YOUR_REPO>"],
     "dryRun": "full"
@@ -144,48 +153,80 @@ An alternative to Post Upgrade Tasks are Post Update Options, which comes with 1
 With the help of the RegEx Manager dependencies in custom file formats that are not supported by the supplied managers can be found. For example shell scripts (curl ...), or RUN in a Dockerfile or GitHub Actions parameters or custom JSON/YAML file formats.
 
 
-## Integrated Automated Dependency Updates
+# GitLab Integration
 
-[//]: # (TABLE?)
+There are various ways in which Renovate can access a repository or several repositories. If Renovate should only run in one repository, a GitLab access token with api and write_repository access is sufficient. If Renovate is to take care of several repositories, it is advisable to create a Renovate user in GitLab and add this user as a member (maintainer or developer) to the relevant projects.
 
-* GoLang Dependencies
-* Dockerfile
-* Helm-Charts - Public
-* OCI Dependencies [HELM](https://docs.renovatebot.com/modules/manager/helmv3)
-* Flux Dependencies (Preview Envs?)
-* ArgoCD Dependencies (Preview Envs?)
+GitLab example
 
+This example shows a basic config.json file for a GitLab repo. As dryRun is not set, the Bot will create Merge Requests in the GitLab repo for the detected dependencies. Renovate will also create the Issue "Dependency Dashboard" in GitLab with the findings.
 
-## RENOVATE DRY-RUN
+```json
+{
+    "platform": "gitlab",
+    "endpoint": "https://gitlab.com/api/v4",
+    "token": "<TOKEN>",
+    "repositories": ["<YOUR_GITLAB_REPOSITORY>"]
+  }
+```
+
+As already mentioned Renovate can be started with docker:
 
 ```bash
-cat <<EOF > config.json
-{
-    "repositories": ["stuttgart-things/clusterbook"],
-    "dryRun" : "full"
-}
-EOF
-
-docker run --rm -v "$(pwd)/config.json:/opt/renovate/config.json"`\
--e RENOVATE_PLATFORM=github \
--e RENOVATE_TOKEN=${GITHUB_TOKEN} \
--e LOG_LEVEL=debug \
--e RENOVATE_CONFIG_FILE=/opt/renovate/config.json \
-renovate/renovate
+docker run --rm -e RENOVATE_CONFIG_FILE=config.json -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
 ```
 
-https://github.com/renovatebot/renovate/blob/main/docs/usage/examples/self-hosting.md
+# Renovate in CI/CD Pipeline (GitLab)
 
+If Renovate is to take care of several repositories an extra repo for the Renovate pipeline can be created.
 
+In the following example Renovate runs in a Docker Container. In the CI/CD settings in GitLab the scheduler can be configured to set the intervall pattern.
 
-
-## Define Custom Dependency Updates
-
-For specialized dependencies update rules (which may not fit standard update workflows) the renoate concepts customManagers and customDatasources can be used.
-
-In the following (shortend) example we want to get updates from github and gitlab releases for an ansible playbook which can be used for installing binaries. the comment after the version is used as a marker for renovate for inserting an version update in the given structure/variable.
-
+```yaml
+#.gitlab-ci.yml
+ 
+stages:
+  - dependency_updates
+ 
+renovate:
+  image: renovate/renovate:slim
+  stage: dependency_updates
+  variables:
+    RENOVATE_PLATFORM: gitlab
+    RENOVATE_ENDPOINT: $CI_API_V4_URL
+    RENOVATE_AUTODISCOVER: "true"
+    RENOVATE_BINARY_SOURCE: install
+    LOG_LEVEL: debug
+  tags:
+    - docker
+  only:
+    - schedules
+  script:
+    - renovate $RENOVATE_EXTRA_FLAGS
 ```
+
+The following environment variabels can bet set, among others:
+
+RENOVATE_AUTODISCOVER: This flag specifies that Renovate should automatically search all repositories to which it has access for dependencies.
+RENOVATE_BINARY_SOURCE: Renovate uses this to install third-party tools that it needs to be able to perform updates, e.g. npm, yarn, ...
+After creating the pipeline the Renovate user can be added as maintainer or developer in a repository to activate Renovate. If the environment variable Autodiscover is set to true in the Renovate job, Renovate will automatically find and analyze the repository the next time it runs. In the renovate.json the configuration for the repository can be added.
+
+# GitHub Integration
+The easiest way to integrate Renovate into GitHub:
+
+* Visit the Renovate GitHub App page.
+* Click Install and select the repositories or organizations where you want to enable Renovate.
+* Renovate will create the renovate.json in your repository or use the default settings.
+* Add a renovate.json to your repository to customize Renovate's behavior
+
+  ![image](https://github.com/user-attachments/assets/f31ab5e3-0db7-48e7-86c4-5ac1de5c4dd4)
+
+# Define Custom Dependency Updates
+For specialized dependencies update rules (which may not fit standard update workflows) the renovate concepts customManagers and customDatasources can be used.
+
+In the following (shortend) example we want to get updates from GitHub and GitLab releases for an ansible playbook which can be used for installing binaries. The comment after the version is used as a marker for renovate for inserting an version update in the given structure/variable.
+
+```yaml
 vars:
   - name: tools
     file: |
@@ -198,7 +239,7 @@ vars:
       glab_version: 1.48.0 # datasource=gitlab-tags depName=gitlab-org/cli
       cilium_version: 0.16.19 # datasource=gitlab-tags depName=cilium/cilium-cli
       dagger_version: 0.13.3 # datasource=gitlab-tags depName=dagger/dagger
-
+ 
       bin:
         flux:
           bin_name: flux
@@ -212,9 +253,9 @@ vars:
           target_version: "{{ flux_version }}"
 ```
 
-the following configuration shows how a regex based customManager for the custom ansible format can be defined. the customDatasource is used for getting updates from hashicorp releases (which will be published on their api).
+The following configuration shows how a regex based customManager for the custom ansible format can be defined. The custom Datasource is used for getting updates from hashicorp releases (which will be published on their api).
 
-```bash
+```yaml
 cat <<EOF > renovate.json
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
@@ -248,135 +289,6 @@ cat <<EOF > renovate.json
 EOF
 ```
 
-## GitHub Integration
+# Conclusion
+Renovate offers a broad spectrum of functionality. Its package manager support, customization for complex project needs, and seamless integration with external vulnerability databases empower developers to implement a proactive security posture. Additionally, Renovate’s granular pull request control streamlines code review and collaboration. Renovate can be used quickly with little configuration to regularly update dependencies. This is especially important to eliminate security vulnerabilities. It furthermore helps to keep the application up to date at all times. This contributes to the error-free and reliable operation of the application. Overwriting transitive dependencies is often technically difficult or impossible. Updating dependencies is the task of the respective maintainer. But there are dedicated tools for detecting unsafe dependencies, e.g.: OSS Review Toolkit, Trivy, OSV Scanner and Dependabot Alerts.
 
-The easiest way of integrate Renovate into GitHub:
-
-* Visit the Renovate GitHub App page.
-* Click Install and select the repositories or organizations where you want to enable Renovate.
-* Renovate will create a configuration file (renovate.json) in your repository or use the default settings.
-
-Add a renovate.json to your repository to customize Renovate's behavior
-
-
-![image](https://github.com/user-attachments/assets/952cacb2-8f05-4a37-8322-89fb5e6f8ded)
-
-
-
-## GitLab Integration
-
-There are various ways in which Renovate can access a repository or several repositories. If Renovate should only run in one repository, a GitLab access token with api and write_repository access is sufficient. If Renovate is to take care of several repositories, it is advisable to create a Renovate user in GitLab and add this user as a member (maintainer or developer) to the relevant projects.
-
-### GitLab.com
-
-```json
-# config.json
-
-{
-    "platform": "gitlab",
-    "endpoint": "https://gitlab.com/api/v4",
-    "token": "<TOKEN>",
-    "repositories": ["<YOUR_GITLAB_REPOSITORY>"] ,
-    "dryRun": "false"
-  }
-```
-
-Run Renovate
-
-```bash
-docker run --rm -e RENOVATE_CONFIG_FILE=config.json -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
-```
-
-Renovate will create an Issue called "Dependency Dashboard" in GitLab with the findings.
-
-### self-hosted GitLab
-
-```json
-# config.json
-
-{
-    "platform": "gitlab",
-    "endpoint": "https://companyhub.de/api/v4",
-    "token": "<TOKEN>",
-    "repositories": ["<YOUR_REPOSITORY>"] ,
-    "dryRun": "full"
-  }
-```
-
-Run Renovate
-
-```bash
-docker run --rm -e RENOVATE_CONFIG_FILE=config.json -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
-```
-
-Renovate will create an Issue called "Dependency Dashboard" in GitLab with the findings.
-
-
-## Local / Testing
-
-With the `dry-run` option Renovate runs only locally without creating Merge Requests. If the LOG_LEVEL is set to `debug`, the detected dependencies are displayed in the console.
-
-```json
-# config.json
-{
-    "platform": "gitlab",
-    "endpoint": "https://companyhub.sva.de/api/v4",
-    "token": ${GITLAB_TOKEN},
-    "repositories": ["<YOUR_REPOSITORY>"] ,
-    "dryRun": "full"
-  }
-```
-
-Run Renovate Locally
-
-```bash
-docker run --rm -e RENOVATE_CONFIG_FILE=config.json -e LOG_LEVEL=debug -v "$(pwd)/config.json:/usr/src/app/config.json" renovate/renovate
-```
-## CompanyHub Configuration
-
-Renovate Runner Onboarding:
-* add Renovate Service Account to repo or group
-* wait for next pipeline schedule to get onboarding pr
-* accept the onboarding pr in the repos
-* wait for next pipeline schedule to get dependency prs
-
-  
-## Renovate in CI/CD Pipeline (GitLab)
-
-If Renovate is to take care of several repositories an extra repo for the renovate pipeline can be created.
-
-In the following example renovate runs in a Docker Container. In the CI/CD settings in GitLab the scheduler can be configured to set the intervall pattern.
-
-```yaml
-#.gitlab-ci.yml
-
-stages:
-  - dependency_updates
-
-renovate:
-  image: renovate/renovate:slim
-  stage: dependency_updates
-  variables:
-    RENOVATE_PLATFORM: gitlab
-    RENOVATE_ENDPOINT: $CI_API_V4_URL
-    RENOVATE_AUTODISCOVER: "true"
-    RENOVATE_BINARY_SOURCE: install
-    LOG_LEVEL: debug
-  tags:
-    - docker
-  only:
-    - schedules
-  script:
-    - renovate $RENOVATE_EXTRA_FLAGS
-```
-The following environment variabels can bet set:
-* RENOVATE_AUTODISCOVER: This flag specifies that Renovate should automatically search all repositories to which it has access for dependencies.
-* RENOVATE_BINARY_SOURCE: Renovate uses this to install third-party tools that it needs to be able to perform updates, e.g. npm, yarn, ...
-
-After creating the pipeline the Renovate user can be added as maintainer or developer in a repository to activate Renovate. If the environment variable Autodiscover is set to true in the Renovate job, Renovate will automatically find and analyze the repository the next time it runs. In a renovate.json the configuration for the repository can be added.
-
-## Conclusion
-
-Renovate can be used quickly with little configuration to regularly update dependencies. This is especially important to eliminate security vulnerabilities quickly. It furthermore helps to keep the application up to date at all times. This contributes to the error-free and reliable operation of the application.
-
-[//]: # (outro)
