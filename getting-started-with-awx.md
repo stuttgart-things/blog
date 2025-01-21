@@ -1,5 +1,7 @@
 # Getting started with AWX
 ![awx_logo](https://github.com/user-attachments/assets/51407902-6747-4e44-8f27-1f7428ee798f)
+<img src="https://github.com/user-attachments/assets/51407902-6747-4e44-8f27-1f7428ee798f" align="right" width="200">
+
 
 
 ## What is AWX?
@@ -27,5 +29,7 @@ A job template is a definition and set of parameters for running an Ansible job.
 Job templates are useful to execute the same job many times. 
 ### Workflows
 Workflows are sequences of job templates that can be executed in a specific order, where the templates may or may not share inventory, playbooks, or permissions. They allow you to chain multiple automation tasks together, enabling more complex and conditional automation scenarios.
+
+<img src="https://github.com/user-attachments/assets/a6932193-b997-46ac-8339-e75d89168f19" alt="GeeksforGeeks logo" align="right" width="200">
 
 
