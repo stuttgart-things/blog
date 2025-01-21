@@ -9,6 +9,8 @@ It is the upstread project from which the Red Hat Ansible Automation Platform is
 AWX is designed to help users and organizations manage the Ansible playbooks, inventories, credentials in a centralized and user-friendly manner. It provides a web-based interface that simplifies the Infrastructure Automation process and projects. AWX also made the collaboration for the teams easy through the use of structured approach to manage the Ansible Automation.
 
 ## Key Terminology
+| ------------- | ---------------------------------------------------------------------------------------------------------- |
+| Organizations | An Organization is a logical collection of Users, Teams, Projects and Inventories. And it is the highest level in the AWX hierarchy. It also provides a structured way to manage access and permissions within AWX, making it easier to control 'who can do what' within the system |
 ### Organizations
 An Organization is a logical collection of Users, Teams, Projects and Inventories. And it is the highest level in the AWX hierarchy. It also provides a structured way to manage access and permissions within AWX, making it easier to control 'who can do what' within the system. 
 ### Playbooks
