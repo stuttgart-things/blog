@@ -25,6 +25,7 @@ AWX is designed to help users and organizations manage the Ansible playbooks, in
 
 ### Directory tree of installed collection
 
+```
 awx_deployment/
 ├── playbook.yml
 ├── templates/
@@ -42,6 +43,7 @@ awx_deployment/
 │   ├── execution_environments.yml
 │   ├── job_templates.yml
 │   ├── workflow_job_templates.yml
+```
 
 ### playbook example
 
