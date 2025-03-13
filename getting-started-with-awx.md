@@ -23,7 +23,7 @@ AWX is designed to help users and organizations manage the Ansible playbooks, in
 
 ## Code example to create awx resources
 
-### Directory tree
+### Directory tree of installed collection
 
 awx_deployment/
 ├── playbook.yml
@@ -46,19 +46,20 @@ awx_deployment/
 ### playbook example
 
 ```yaml
-- name: Deploy AWX Resources
-  hosts: localhost
-  tasks:
-    - name: Create organizations
-      awx.awx.organization:
-        name: "{{ item.value.name }}"
-        description: "{{ item.value.description }}"
-        state: "{{ item.value.state }}"
-        galaxy_credentials:
-          - Ansible Galaxy
-        validate_certs: false
-      loop: "{{ lookup('dict', organizations, wantlist=True) }}"
-      when: organizations is defined
+playbooks:
+  - name: Deploy AWX Resources
+    hosts: localhost
+    tasks:
+      - name: Create organizations
+        awx.awx.organization:
+          name: "{{ item.value.name }}"
+          description: "{{ item.value.description }}"
+          state: "{{ item.value.state }}"
+          galaxy_credentials:
+            - Ansible Galaxy
+          validate_certs: false
+        loop: "{{ lookup('dict', organizations, wantlist=True) }}"
+        when: organizations is defined
 [...]
 ```
 
@@ -67,11 +68,15 @@ awx_deployment/
 vars/
 
 ```yaml
-organizations:
-  org1:
-    name: "Organization 1"
-    description: "Description for Organization 1"
-    state: "present"
+vars:
+  - name: organization-sthings
+    file: |
+      ---
+      organizations:
+        org1:
+          name: "Organization 1"
+          description: "Description for Organization 1"
+          state: "present"
 ```
 
 ### template example for surveys
@@ -79,26 +84,27 @@ organizations:
 templates/
 
 ```yaml
-- name: survey.json.j2
-  file: |
-    {
-        "name": "",
-        "description": "",
-        "spec": [
-        {% for key, question in questions.items() %}
-        {
-            "question_name": "{{ question.name }}",
-            "question_description": "{{ question.description }}",
-            "required": {{ question.required | lower }},
-            "type": "{{ question.type }}",
-            "variable": "{{ question.variable }}",
-            "min": {{ question.min }},
-            "max": {{ question.max }},
-            {% if question.choices is defined %}
-            "choices": {{ question.choices }},
-            {% endif %}
-            "default": "{{ question.default }}"
-        }{% if not loop.last %},{% endif %}{% endfor %}
-        ]
-    }
+templates:
+  - name: survey.json.j2
+    file: |
+      {
+          "name": "",
+          "description": "",
+          "spec": [
+          {% for key, question in questions.items() %}
+          {
+              "question_name": "{{ question.name }}",
+              "question_description": "{{ question.description }}",
+              "required": {{ question.required | lower }},
+              "type": "{{ question.type }}",
+              "variable": "{{ question.variable }}",
+              "min": {{ question.min }},
+              "max": {{ question.max }},
+              {% if question.choices is defined %}
+              "choices": {{ question.choices }},
+              {% endif %}
+              "default": "{{ question.default }}"
+          }{% if not loop.last %},{% endif %}{% endfor %}
+          ]
+      }
 ```
