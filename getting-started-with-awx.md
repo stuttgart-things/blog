@@ -26,25 +26,25 @@ Understanding the key terminology in AWX is crucial for effectively using the pl
 
 ## Why AWX in KIND?
 
-AWX is generally used to manage and automate IT infrastructure, providing a centralized platform for running Ansible playbooks, managing inventories, and handling credentials. However, this blog focuses on using AWX as a developer setup to test and learn. By leveraging KIND (Kubernetes IN Docker), developers can create a local, isolated environment to experiment with AWX without the need for extensive infrastructure. Here are the pros:
+AWX is generally used to manage and automate IT infrastructure, providing a centralized platform for running Ansible playbooks, managing inventories, and handling credentials. However, this blog focuses on using AWX as a developer setup to test and learn. By leveraging KIND (Kubernetes IN Docker), developers can create a local, isolated environment to experiment with AWX without the need for extensive infrastructure. Here are the pros:<br>
 
-Simplicity and Ease of Setup:
-Kind is straightforward to install and configure, making it accessible for beginners. You can quickly spin up a Kubernetes cluster without needing extensive infrastructure or complex setup procedures.
+**Simplicity and Ease of Setup:**<br>
+Kind is straightforward to install and configure, making it accessible for beginners. You can quickly spin up a Kubernetes cluster without needing extensive infrastructure or complex setup procedures.<br>
 
-Local Development:
-Since kind runs Kubernetes clusters in Docker containers, you can run it locally on your development machine. This eliminates the need for cloud resources or remote servers, making it cost-effective and convenient.
+**Local Development:**<br>
+Since kind runs Kubernetes clusters in Docker containers, you can run it locally on your development machine. This eliminates the need for cloud resources or remote servers, making it cost-effective and convenient.<br>
 
-Isolation and Safety:
-Kind allows you to create isolated Kubernetes clusters. This means you can experiment and test AWX without affecting other environments or production systems. It's a safe playground for learning and testing.
+**Isolation and Safety:**<br>
+Kind allows you to create isolated Kubernetes clusters. This means you can experiment and test AWX without affecting other environments or production systems. It's a safe playground for learning and testing.<br>
 
-Consistency with Production:
-Kind provides a Kubernetes environment that is consistent with production clusters. This helps new users understand how AWX will behave in a real Kubernetes environment, ensuring that what they learn and test locally will be applicable in production.
+**Consistency with Production:**<br>
+Kind provides a Kubernetes environment that is consistent with production clusters. This helps new users understand how AWX will behave in a real Kubernetes environment, ensuring that what they learn and test locally will be applicable in production.<br>
 
-Resource Efficiency:
-Running Kubernetes clusters in Docker containers is resource-efficient. Kind clusters consume fewer resources compared to running full-fledged virtual machines, making it suitable for machines with limited resources.
+**Resource Efficiency:**<br>
+Running Kubernetes clusters in Docker containers is resource-efficient. Kind clusters consume fewer resources compared to running full-fledged virtual machines, making it suitable for machines with limited resources.<br>
 
-Community and Support:
-Kind is widely used and supported by the Kubernetes community. There are plenty of resources, tutorials, and community support available to help new users get started and troubleshoot any issues they encounter.
+**Community and Support:**<br>
+Kind is widely used and supported by the Kubernetes community. There are plenty of resources, tutorials, and community support available to help new users get started and troubleshoot any issues they encounter.<br>
 
 ## Install requirements
 
