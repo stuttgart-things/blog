@@ -1,7 +1,11 @@
-# Getting started with AWX in KIND
+# Getting started with AWX
 <img src="https://github.com/user-attachments/assets/51407902-6747-4e44-8f27-1f7428ee798f" align="right" width="300">
 
-## What is AWX?
+## /INTRO
+
+what is this blog about? what is the scope? 2-3 sentences
+
+## MERGE: What is AWX? + Purpose of AWX (max 3 sentences 2-3 sentecnes refrence to AAP/tower)
 AWX is an open-source project that provides web-based user interface, REST API, and task enginer for Ansible. 
 It is the upstread project from which the Red Hat Ansible Automation Platform is derived. AWX allows the user to manage and control Ansible Automation in a more efficient and user-friendly manner.
 
@@ -14,7 +18,7 @@ Understanding the key terminology in AWX is crucial for effectively using the pl
 
 |         |                                                                 |
 |---------|-----------------------------------------------------------------|
-| Organizations    | An Organization is a logical collection of Users, Teams, Projects and Inventories. And it is the highest level in the AWX hierarchy. It also provides a structured way to manage access and permissions within AWX, making it easier to control `who can do what` within the system. |
+| Organizations    | An Organization is a logical collection of Users, Teams, Projects and Inventories. And it is the highest level in the AWX hierarchy. It also provides a structured way to manage access and permissions within AWX. |
 | Playbooks | Playbooks are the YAML files that define a series of tasks to be executed by Ansible. They are used to automate complex workflows and configurations. |
 | Inventories | Inventories are lists of hosts or groups of hosts that Ansible manages. They can be defined in static files or dynamically generated from various sources. |
 | Credentials| Credentials in AWX are used to authenticate and authorize access to remote systems. AWX seemless integration with various cloud, vault or secret service providers allows the users/teams/organizations to securely store and manage credentials for different environments and use cases. |
@@ -49,6 +53,8 @@ Kind is widely used and supported by the Kubernetes community. There are plenty 
 ## Install requirements
 
 This file specifies the roles and collections that Ansible will use to perform various tasks.
+
+<details><summary>Example requirements file</summary>
 
 ```yaml
 cat <<EOF > requirements.yaml
@@ -114,6 +120,8 @@ collections:
 EOF
 ```
 
+</details>
+
 To install the specified collections and roles, use the following command:
 
 ```bash
@@ -128,7 +136,7 @@ This command will download and install all the necessary collections and roles d
 
 This inventory file defines the hosts and groups of hosts that Ansible will manage. The [group1] section lists the IP addresses or hostnames of the remote machines, along with the Ansible user and password for authentication (definable after each host entry or in the defaults section). Alternatively you can only specify one host. The [defaults] section sets global variables, such as disabling host key checking and specifying the Ansible user and password.
 
-Example Inventory file:
+<details><summary>Example Inventory</summary>
 
 ```yaml
 cat <<EOF > inventory
@@ -147,6 +155,8 @@ ansible_user = <name> # Enter Ansible User
 ansible_password = <password> # Enter Ansible User Password
 EOF
 ```
+
+</details>
 
 ### Install KIND and AWX playbook example
 
