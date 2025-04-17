@@ -1,16 +1,11 @@
 # Getting started with AWX
-<img src="https://github.com/user-attachments/assets/51407902-6747-4e44-8f27-1f7428ee798f" align="right" width="300">
+<img src="https://private-user-images.githubusercontent.com/166600787/433764776-cc322bef-5985-4eb4-a6c6-5618d9b2a3e4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDQ3MTAxMDYsIm5iZiI6MTc0NDcwOTgwNiwicGF0aCI6Ii8xNjY2MDA3ODcvNDMzNzY0Nzc2LWNjMzIyYmVmLTU5ODUtNGViNC1hNmM2LTU2MThkOWIyYTNlNC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDE1JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQxNVQwOTM2NDZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT00YTVkNWFhNjM3Mzg0NGExMDc4YmFiMjYyYTdlNjU5NDgyNzhjY2I1N2YxNTMxMjg0MDk2YjZlMGJlZTRmMWJmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.pYi2f40fey2n324TKm7UTSVCFXPZvIUHaukFsRfHpyQ" align="right" width="300">
 
-## /INTRO
+This blog post provides a comprehensive guide to setting up AWX in a local development environment using KIND (Kubernetes IN Docker).
 
-what is this blog about? what is the scope? 2-3 sentences
+## What is AWX and its purpose
 
-## MERGE: What is AWX? + Purpose of AWX (max 3 sentences 2-3 sentecnes refrence to AAP/tower)
-AWX is an open-source project that provides web-based user interface, REST API, and task enginer for Ansible. 
-It is the upstread project from which the Red Hat Ansible Automation Platform is derived. AWX allows the user to manage and control Ansible Automation in a more efficient and user-friendly manner.
-
-## Purpose of AWX
-AWX is designed to help users and organizations manage the Ansible playbooks, inventories, credentials in a centralized and user-friendly manner. It provides a web-based interface that simplifies the Infrastructure Automation process and projects. AWX also made the collaboration for the teams easy through the use of structured approach to manage the Ansible Automation.
+AWX is an open-source project that provides a web-based user interface, REST API, and task engine for Ansible. It is the upstream project from which the Red Hat Ansible Automation Platform (AAP) is derived. AWX allows users and organizations to manage Ansible playbooks, inventories, and credentials in a centralized and user-friendly manner. It provides a web-based interface that simplifies the infrastructure automation process and projects, enhancing team collaboration through a structured approach.
 
 ## Key Terminology
 
@@ -30,31 +25,11 @@ Understanding the key terminology in AWX is crucial for effectively using the pl
 
 ## Why AWX in KIND?
 
-AWX is generally used to manage and automate IT infrastructure, providing a centralized platform for running Ansible playbooks, managing inventories, and handling credentials. However, this blog focuses on using AWX as a developer setup to test and learn. By leveraging KIND (Kubernetes IN Docker), developers can create a local, isolated environment to experiment with AWX without the need for extensive infrastructure. Here are the pros:<br>
+By leveraging KIND (Kubernetes IN Docker), developers can create a local, isolated environment to experiment with AWX easily and safely. KIND offers simplicity, local development, isolation, consistency with production, resource efficiency, and strong community support.
 
-**Simplicity and Ease of Setup:**<br>
-Kind is straightforward to install and configure, making it accessible for beginners. You can quickly spin up a Kubernetes cluster without needing extensive infrastructure or complex setup procedures.<br>
+## Install Roles and Collections
 
-**Local Development:**<br>
-Since kind runs Kubernetes clusters in Docker containers, you can run it locally on your development machine. This eliminates the need for cloud resources or remote servers, making it cost-effective and convenient.<br>
-
-**Isolation and Safety:**<br>
-Kind allows you to create isolated Kubernetes clusters. This means you can experiment and test AWX without affecting other environments or production systems. It's a safe playground for learning and testing.<br>
-
-**Consistency with Production:**<br>
-Kind provides a Kubernetes environment that is consistent with production clusters. This helps new users understand how AWX will behave in a real Kubernetes environment, ensuring that what they learn and test locally will be applicable in production.<br>
-
-**Resource Efficiency:**<br>
-Running Kubernetes clusters in Docker containers is resource-efficient. Kind clusters consume fewer resources compared to running full-fledged virtual machines, making it suitable for machines with limited resources.<br>
-
-**Community and Support:**<br>
-Kind is widely used and supported by the Kubernetes community. There are plenty of resources, tutorials, and community support available to help new users get started and troubleshoot any issues they encounter.<br>
-
-## Install requirements
-
-This file specifies the roles and collections that Ansible will use to perform various tasks.
-
-<details><summary>Example requirements file</summary>
+The requirements file you need to install:
 
 ```yaml
 cat <<EOF > requirements.yaml
@@ -102,7 +77,7 @@ collections:
   - name: ansible.posix
     version: 2.0.0
   - name: kubernetes.core
-    version: 5.2.0
+    version: 5.1.0
   - name: community.docker
     version: 4.5.2
   - name: community.vmware
@@ -113,14 +88,13 @@ collections:
     version: 6.2.0
   - name: ansible.netcommon
     version: 7.2.0
-  - name: https://github.com/stuttgart-things/ansible/releases/download/sthings-container-25.6.528.tar.gz/sthings-container-25.6.528.tar.gz
-  - name: https://github.com/stuttgart-things/ansible/releases/download/sthings-baseos-25.6.530.tar.gz/sthings-baseos-25.6.530.tar.gz
-  - name: https://github.com/stuttgart-things/ansible/releases/download/sthings-awx-25.4.1190/sthings-awx-25.4.1190.tar.gz
+  - name: https://github.com/stuttgart-things/ansible/releases/download/sthings-container-25.2.474.tar.gz/sthings-container-25.2.474.tar.gz
+  - name: https://github.com/stuttgart-things/ansible/releases/download/sthings-baseos-25.2.472.tar.gz/sthings-baseos-25.2.472.tar.gz
+  - name: https://github.com/stuttgart-things/ansible/releases/download/sthings-awx-25.2.473.tar.gz/sthings-awx-25.2.473.tar.gz
   - name: https://github.com/stuttgart-things/ansible/releases/download/sthings-rke-25.1.568.tar.gz/sthings-rke-25.1.568.tar.gz
 EOF
 ```
-
-</details>
+<br>
 
 To install the specified collections and roles, use the following command:
 
@@ -130,13 +104,15 @@ ansible-galaxy collection install -r ./requirements.yaml -f
 
 This command will download and install all the necessary collections and roles defined in the requirements.yaml file, ensuring that your Ansible environment is ready for the subsequent tasks to install KIND and AWX.
 
-## Create KIND and AWX
+## Create KIND and deploy AWX
 
 ### Inventory file
 
-This inventory file defines the hosts and groups of hosts that Ansible will manage. The [group1] section lists the IP addresses or hostnames of the remote machines, along with the Ansible user and password for authentication (definable after each host entry or in the defaults section). Alternatively you can only specify one host. The [defaults] section sets global variables, such as disabling host key checking and specifying the Ansible user and password.
+You need an inventory file which defines the hosts and/or groups of hosts that Ansible will manage.
 
 <details><summary>Example Inventory</summary>
+
+The [group1] section lists the IP addresses or hostnames of the remote machines, along with the Ansible user and password for authentication (definable after each host entry or in the defaults section). Alternatively you can only specify one host. The [defaults] section sets global variables, such as disabling host key checking and specifying the Ansible user and password.
 
 ```yaml
 cat <<EOF > inventory
@@ -158,138 +134,173 @@ EOF
 
 </details>
 
-### Install KIND and AWX playbook example
+### Install KIND and AWX with Ansible
 
-Now that you have your inventory file ready, you can proceed with the playbook to install KIND and AWX. This playbook includes various tasks, each broken down into separate playbooks for better manageability and clarity.
+Now that you have your inventory file ready, you can proceed with the playbook to install KIND and then AWX. These plays include various tasks, many of them broken down into separate playbooks for better manageability and clarity.
 
-```yaml
-- name: Base setup
-  ansible.builtin.import_playbook: sthings.baseos.setup
-  # vars:
-  #   key: value
-
-- name: Install binaries
-  ansible.builtin.import_playbook: sthings.baseos.binaries
-  # vars:
-  #   key: value
-
-- name: Install ansible
-  ansible.builtin.import_playbook: sthings.baseos.ansible
-  # vars:
-  #   key: value
-
-- name: Install golang
-  ansible.builtin.import_playbook: sthings.baseos.golang
-  # vars:
-  #   key: value
-
-- name: Install pre_commit
-  ansible.builtin.import_playbook: sthings.baseos.pre_commit
-  # vars:
-  #   key: value
-
-- name: Install semantic_release
-  ansible.builtin.import_playbook: sthings.baseos.semantic_release
-  # vars:
-  #   key: value
-
-- name: Install docker
-  import_playbook: sthings.container.docker
-  # vars:
-  #   key: value
-
-- name: Install container tools
-  import_playbook: sthings.container.tools
-  # vars:
-  #   key: value
-
-- name: Install nerdctl
-  import_playbook: sthings.container.nerdctl
-  # vars:
-  #   key: value
-
-- name: Install podman
-  import_playbook: sthings.container.podman
-  # vars:
-  #   key: value
-
-- name: Reboot
-  import_playbook: sthings.container.reboot_vm
-  # vars:
-  #   key: value
-
-- name: Execute dev config
-  import_playbook: sthings.baseos.dev_config
-  # vars:
-  #   key: value
-
-- name: Create kind dev cluster
-  import_playbook: sthings.container.kind
-  vars:
-    kind_cluster_name: dev
-    ansible_user: sthings
-    count_worker_nodes: 3
-    count_controlplane_nodes: 1
-    kubectl_version: 1.32.3
-
-- name: Deploy cilium on dev kind cluster
-  import_playbook: sthings.container.deploy_to_k8s
-  vars:
-    profile: cilium-kind
-    state: present
-    path_to_kubeconfig: /home/{{ ansible_user }}/.kube/{{ kind_cluster_name }}
-    target_host: all
-    cluster_name: "{{ kind_cluster_name }}"
-
-- name: Deploy cert-manager on dev kind cluster
-  import_playbook: sthings.container.deploy_to_k8s
-  vars:
-    profile: cert-manager-kind
-    state: present
-    path_to_kubeconfig: /home/{{ ansible_user }}/.kube/{{ kind_cluster_name }}
-    target_host: all
-    cluster_name: "{{ kind_cluster_name }}"
-
-- name: Deploy ingress-nginx on dev kind cluster
-  import_playbook: sthings.container.deploy_to_k8s
-  vars:
-    profile: ingress-nginx-kind
-    state: present
-    path_to_kubeconfig: /home/{{ ansible_user }}/.kube/{{ kind_cluster_name }}
-    target_host: all
-    cluster_name: "{{ kind_cluster_name }}"
-
-- name: Set fact Controlplane IP
-  import_playbook: sthings.container.get_controlplane_ip
-  vars:
-    kind_cluster_name: dev
-    ansible_user: <user>
-
-- name: Deploy awx-operator and awx-instance on kind cluster
-  import_playbook: sthings.container.deploy_to_k8s
-  vars:
-    profile: awx-operator-kind
-    state: present
-    path_to_kubeconfig: /home/{{ ansible_user }}/.kube/{{ kind_cluster_name }}
-    target_host: all
-    cluster_name: "{{ kind_cluster_name }}"
-    control_plane_ip: "{{ control_plane_ip }}"
-
-```
-
-In this setup, each task is broken down into separate playbooks, making it easier to manage and understand. The playbooks are named clearly, indicating their purpose, which helps users follow the sequence of tasks effortlessly. By importing playbooks, the reusability is significantly increased, allowing them to be used for multiple purposes. Additionally, the use of variables enables easy customization of the playbooks for different environments or requirements.
-
-From a technical perspective, each playbook handles a specific aspect of the setup, adhering to the principle of separation of concerns. This approach enhances maintainability and simplifies debugging. The structure is designed for scalability; adding more tools or configurations can be achieved by simply incorporating additional playbooks or expanding the variables sections. Furthermore, the setup automates the installation and configuration of various tools and services, minimizing the potential for human error and ensuring a consistent environment.
-
-### Execute Collection
+The first play installs KIND and kubernetes resources ( ingress-nginx, cert-manager and cilium ).
 
 ```bash
-ansible-playbook sthings.baseos.dev -i inventory -vv
+ansible-playbook sthings.container.kind -i inventory -vv
+```
+<details><summary>-e options:</summary>
+
+Add these arguments to the execution command<br>
+
+```yaml
+-e kind_cluster_name=<name> \ # Enter cluster name
+-e path_to_kubeconfig=/home/<user>/.kube/<kubeconfig> \ # Enter username and file-name
+-e kind_version=0.27.0 \ # change if needed
+-e kubectl_version=1.32.3 \ # change if needed
+-e count_worker_nodes=3 \ # change if needed
+-e count_controlplane_nodes=1 # change if needed
 ```
 
-This command runs the playbook sthings.baseos.dev against the hosts defined in your inventory file, with verbose output enabled (-vv). This will provide detailed logs and status information, helping you monitor the execution process and troubleshoot any issues that arise.
+</details><br>
 
-By following these steps, you can set up a local development environment with AWX and KIND, allowing you to test and learn Ansible automation in a safe and isolated environment. This setup is ideal for developers who want to experiment with AWX without the need for extensive infrastructure, making it a cost-effective and convenient solution.
+When KIND is installed you can execute the next play to install AWX and deploy its resources.
 
-In Blog Part 2 we will explain how to setup AWX Resources and how to create the first jobs and workflows.
+```bash
+ansible-playbook sthings.awx.deploy -i inventory -vv
+```
+<details><summary>-e options:</summary>
 
+Add these arguments to the execution command<br>
+
+```yaml
+-e kind_cluster_name=<name> \ # Enter same cluster name of above
+-e control_plane_ip=xx.xxx.xxx.xx # Enter ip from last task output from first play
+```
+
+</details><br>
+
+These commands execute the plays against the host(s) defined in your inventory file (-i <inventory>), with verbose output enabled (-vv). This will provide detailed logs and status information, helping you monitor the execution process and troubleshoot any issues that arise.
+
+<details><summary>Don't forget to export the KUBECONFIG</summary>
+
+```bash
+export KUBECONFIG=/home/<user>/.kube/<config>
+```
+</details>
+
+### Manual install
+
+Download the Kind binary from the Kind releases page, make the binary executable and move it to a directory in your $PATH.
+
+```bash
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+```
+
+Create a YAML file with the desired cluster configuration.
+
+<details><summary>Example cluster configuration</summary>
+
+```yaml
+cat <<EOF > kind-config.yaml
+---
+kind: Cluster
+name: <name> # Enter Clustername
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  disableDefaultCNI: True # Disabled because cilium gets deployed, change if needed
+  kubeProxyMode: none
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.32.3
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: ingress-ready=true
+    # The extraPortMappings section is used to map ports
+    # from the container running the Kubernetes node to the host machine.
+    # This allows services running inside the Kubernetes cluster to
+    # be accessible from the host machine on specified ports.
+    # By configuring these port mappings like below, you can access services running
+    # inside your KIND cluster directly from your host machine using localhost.
+    extraPortMappings:
+      - containerPort: 80
+        hostPort: 80
+        protocol: TCP
+      - containerPort: 443
+        hostPort: 443
+        protocol: TCP
+  - role: worker
+    image: kindest/node:v1.32.3
+    extraMounts:
+      - hostPath: /mnt/data-node1 # Host directory to mount
+        containerPath: /data # Mount path inside the KinD node
+  - role: worker
+    image: kindest/node:v1.32.3
+    extraMounts:
+      - hostPath: /mnt/data-node2 # Host directory to mount
+        containerPath: /data # Mount path inside the KinD node
+  - role: worker
+    image: kindest/node:v1.32.3
+    extraMounts:
+      - hostPath: /mnt/data-node3 # Host directory to mount
+        containerPath: /data # Mount path inside the KinD node
+EOF
+```
+</details><br>
+
+Execute this command to create the KIND cluster.
+
+```bash
+kind create cluster --config kind-config.yaml
+```
+
+<details><summary>Don't forget to export the KUBECONFIG</summary>
+
+```bash
+export KUBECONFIG=/home/<user>/.kube/<config>
+```
+</details>
+
+#### Helm Charts
+
+To deploy ingress-nginx, cilium and cert-manager use these following commands.
+
+#### ingress-nginx
+
+```bash
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+helm install ingress-nginx ingress-nginx/ingress-nginx --version <4.12.0> --namespace ingress-nginx -f <ingress-nginx.values.yaml> --disable-openapi-validation
+```
+
+#### cilium
+
+```bash
+helm repo add cilium https://helm.cilium.io
+helm repo update
+
+helm install cilium cilium/cilium --version <1.17.2> --namespace kube-system -f <cilium-values.yaml>
+```
+
+#### cert-manager
+
+```bash
+helm repo add cert-manager https://charts.jetstack.io
+helm repo update
+
+helm install cert-manager cert-manager/cert-manager --version <v1.17.1> --namespace cert-manager -f <cert-manager-values.yaml>
+```
+
+#### awx
+
+```bash
+helm repo add awx https://ansible-community.github.io/awx-operator-helm/
+helm repo update
+
+
+helm install awx-operator awx/awx-operator --version <3.0.0> --namespace awx -f <awx-values.yaml>
+```
+
+By following these steps, you can set up a local development environment with KIND and AWX, allowing you to test and learn Ansible automation in a safe and isolated environment. This setup is ideal for developers who want to experiment with AWX without the need for extensive infrastructure, making it a cost-effective and convenient solution.
+
+In Blog Part 2 we will explain how to setup AWX Resources and how to create the first awx-jobs and workflows.
