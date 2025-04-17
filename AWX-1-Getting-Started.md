@@ -143,7 +143,7 @@ The first play installs KIND and kubernetes resources ( ingress-nginx, cert-mana
 ```bash
 ansible-playbook sthings.container.kind -i inventory -vv
 ```
-<details><summary>-e options:</summary>
+<details><summary>Install options:</summary>
 
 Add these arguments to the execution command<br>
 
@@ -163,7 +163,7 @@ When KIND is installed you can execute the next play to install AWX and deploy i
 ```bash
 ansible-playbook sthings.awx.deploy -i inventory -vv
 ```
-<details><summary>-e options:</summary>
+<details><summary>Install options:</summary>
 
 Add these arguments to the execution command<br>
 
@@ -184,6 +184,8 @@ export KUBECONFIG=/home/<user>/.kube/<config>
 </details>
 
 ### Manual install
+
+#### Install Kind
 
 Download the Kind binary from the Kind releases page, make the binary executable and move it to a directory in your $PATH.
 
@@ -260,20 +262,11 @@ export KUBECONFIG=/home/<user>/.kube/<config>
 ```
 </details>
 
-#### Helm Charts
+#### KIND provisioning
 
 To deploy ingress-nginx, cilium and cert-manager use these following commands.
 
-#### ingress-nginx
-
-```bash
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
-
-helm install ingress-nginx ingress-nginx/ingress-nginx --version <4.12.0> --namespace ingress-nginx -f <ingress-nginx.values.yaml> --disable-openapi-validation
-```
-
-#### cilium
+##### cilium
 
 ```bash
 helm repo add cilium https://helm.cilium.io
@@ -282,7 +275,16 @@ helm repo update
 helm install cilium cilium/cilium --version <1.17.2> --namespace kube-system -f <cilium-values.yaml>
 ```
 
-#### cert-manager
+##### ingress-nginx
+
+```bash
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+helm install ingress-nginx ingress-nginx/ingress-nginx --version <4.12.0> --namespace ingress-nginx -f <ingress-nginx.values.yaml> --disable-openapi-validation
+```
+
+##### cert-manager
 
 ```bash
 helm repo add cert-manager https://charts.jetstack.io
@@ -291,7 +293,7 @@ helm repo update
 helm install cert-manager cert-manager/cert-manager --version <v1.17.1> --namespace cert-manager -f <cert-manager-values.yaml>
 ```
 
-#### awx
+##### awx
 
 ```bash
 helm repo add awx https://ansible-community.github.io/awx-operator-helm/
