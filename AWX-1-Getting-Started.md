@@ -207,7 +207,7 @@ name: <name> # Enter Clustername
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
   disableDefaultCNI: True # Disabled because cilium gets deployed, change if needed
-  kubeProxyMode: none
+#  kubeProxyMode: none
 nodes:
   - role: control-plane
     image: kindest/node:v1.32.3
@@ -217,12 +217,6 @@ nodes:
         nodeRegistration:
           kubeletExtraArgs:
             node-labels: ingress-ready=true
-    # The extraPortMappings section is used to map ports
-    # from the container running the Kubernetes node to the host machine.
-    # This allows services running inside the Kubernetes cluster to
-    # be accessible from the host machine on specified ports.
-    # By configuring these port mappings like below, you can access services running
-    # inside your KIND cluster directly from your host machine using localhost.
     extraPortMappings:
       - containerPort: 80
         hostPort: 80
@@ -260,48 +254,96 @@ kind create cluster --config kind-config.yaml
 ```bash
 export KUBECONFIG=/home/<user>/.kube/<config>
 ```
-</details>
+</details><br>
+
+The cluster nodes will remain in state **NotReady** until Cilium is deployed. This behavior is expected.
 
 #### KIND provisioning
 
-To deploy ingress-nginx, cilium and cert-manager use these following commands.
+To deploy cilium, ingress-nginx and cert-manager use these following commands.
+
+```yaml
+CLUSTERNAME=<clustername> # Enter clustername (use the same as in kind-config.yaml)
+```
 
 ##### cilium
 
 ```bash
-helm repo add cilium https://helm.cilium.io
-helm repo update
+helm repo add cilium https://helm.cilium.io/
+docker pull quay.io/cilium/cilium:v1.17.2
+kind load docker-image quay.io/cilium/cilium:v1.17.2 --name $CLUSTERNAME
 
-helm install cilium cilium/cilium --version <1.17.2> --namespace kube-system -f <cilium-values.yaml>
+helm install cilium cilium/cilium --version 1.17.2 --namespace kube-system --set image.pullPolicy=IfNotPresent --set ipam.mode=kubernetes # -f cilium-values.yaml
 ```
 
 ##### ingress-nginx
 
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
+docker pull registry.k8s.io/ingress-nginx/controller:v1.12.0@sha256:e6b8de175acda6ca913891f0f727bca4527e797d52688cbe9fec9040d6f6b6fa
+kind load docker-image registry.k8s.io/ingress-nginx/controller:v1.12.0@sha256:e6b8de175acda6ca913891f0f727bca4527e797d52688cbe9fec9040d6f6b6fa --name $CLUSTERNAME
 
-helm install ingress-nginx ingress-nginx/ingress-nginx --version <4.12.0> --namespace ingress-nginx -f <ingress-nginx.values.yaml> --disable-openapi-validation
+helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-nginx --disable-openapi-validation # -f ingress-nginx.values.yaml 
 ```
 
 ##### cert-manager
 
 ```bash
-helm repo add cert-manager https://charts.jetstack.io
-helm repo update
+helm repo add jetstack https://charts.jetstack.io
+docker pull quay.io/jetstack/cert-manager-controller:v1.17.1
+kind load docker-image quay.io/jetstack/cert-manager-controller:v1.17.1 --name $CLUSTERNAME
 
-helm install cert-manager cert-manager/cert-manager --version <v1.17.1> --namespace cert-manager -f <cert-manager-values.yaml>
+helm install cert-manager cert-manager/cert-manager --version v1.17.1 --create-namespace --namespace cert-manager # -f cert-manager-values.yaml
+```
+
+Next you need to deploy a clusterissuer:
+
+```yaml
+cat <<EOF > issuer.yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned
+spec:
+  selfSigned: {}
+EOF
+```
+
+```bash
+kubectl apply -f issuer.yaml
 ```
 
 ##### awx
 
-```bash
-helm repo add awx https://ansible-community.github.io/awx-operator-helm/
-helm repo update
-
-
-helm install awx-operator awx/awx-operator --version <3.0.0> --namespace awx -f <awx-values.yaml>
+```yaml
+cat <<EOF > awx-values.yaml
+AWX:
+  enabled: true
+  spec:
+    service_type: ClusterIP
+    ingress_type: ingress 
+    hostname: <hostname> # Enter Cluster ip
+    ingress_class_name: nginx
+EOF
 ```
+
+```bash
+helm repo add awx-operator https://ansible-community.github.io/awx-operator-helm/
+docker pull quay.io/ansible/awx-operator:2.19.1
+kind load docker-image quay.io/ansible/awx-operator:2.19.1 --name $CLUSTERNAME
+
+helm install awx-operator awx-operator/awx-operator --create-namespace --namespace awx -f awx-values.yaml
+```
+
+To access AWX in your browser can port-forward:
+
+```bash
+kubectl port-forward svc/awx-service -n awx 8080:80
+```
+
+Now you can reach AWX in you browser with: http://localhost:8081
 
 By following these steps, you can set up a local development environment with KIND and AWX, allowing you to test and learn Ansible automation in a safe and isolated environment. This setup is ideal for developers who want to experiment with AWX without the need for extensive infrastructure, making it a cost-effective and convenient solution.
 
