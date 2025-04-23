@@ -302,8 +302,6 @@ Next you need to deploy a clusterissuer:
 cat <<EOF > issuer.yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
 metadata:
   name: selfsigned
 spec:
