@@ -34,41 +34,6 @@ The requirements file you need to install:
 ```yaml
 cat <<EOF > requirements.yaml
 ---
-roles:
-  - src: https://github.com/stuttgart-things/deploy-configure-rke.git
-    scm: git
-  - src: https://github.com/stuttgart-things/install-configure-powerdns.git
-    scm: git
-  - src: https://github.com/stuttgart-things/configure-rke-node.git
-    scm: git
-  - src: https://github.com/stuttgart-things/install-requirements.git
-    scm: git
-  - src: https://github.com/stuttgart-things/create-send-webhook.git
-    version: 2024.06.06
-    scm: git
-  - src: https://github.com/stuttgart-things/install-configure-vault.git
-    scm: git
-  - src: https://github.com/stuttgart-things/install-configure-nfs.git
-    scm: git
-  - src: https://github.com/stuttgart-things/manage-filesystem.git
-    version: 2024.06.07
-    scm: git
-  - src: https://github.com/stuttgart-things/download-install-binary.git
-    scm: git
-    version: 2025.03.27
-  - src: https://github.com/stuttgart-things/create-os-user.git
-    scm: git
-    version: 2024.05.03
-  - src: https://github.com/stuttgart-things/install-configure-docker.git
-    scm: git
-    version: 2025.10.04
-  - src: https://github.com/stuttgart-things/install-configure-podman.git
-    scm: git
-    version: 2024.05.08
-  - src: https://github.com/stuttgart-things/manage-proxmox-resources.git
-    scm: git
-    version: 2024.05.27
-
 collections:
   - name: community.crypto
     version: 2.26.0
@@ -342,6 +307,9 @@ kubectl port-forward svc/awx-service -n awx 8080:80
 ```
 
 Now you can reach AWX in you browser with: http://localhost:8081
+
+If you installed KIND on a VM you can access AWX with the cluster ip.
+
 
 By following these steps, you can set up a local development environment with KIND and AWX, allowing you to test and learn Ansible automation in a safe and isolated environment. This setup is ideal for developers who want to experiment with AWX without the need for extensive infrastructure, making it a cost-effective and convenient solution.
 
