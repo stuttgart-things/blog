@@ -335,7 +335,7 @@ kind load docker-image quay.io/ansible/awx-operator:2.19.1 --name $CLUSTERNAME
 helm install awx-operator awx-operator/awx-operator --create-namespace --namespace awx -f awx-values.yaml
 ```
 
-To access AWX in your browser can port-forward:
+To access AWX in your browser you can port-forward:
 
 ```bash
 kubectl port-forward svc/awx-service -n awx 8080:80
