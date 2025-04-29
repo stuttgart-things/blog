@@ -371,10 +371,9 @@ To access AWX in your browser you can port-forward:
 kubectl port-forward svc/awx-service -n awx 8080:80
 ```
 
-Now you can reach AWX in you browser with: http://localhost:8081
+Now you can reach AWX in you browser with: http://localhost:8080
 
 If you installed KIND on a VM you can access AWX with the cluster ip.
-
 
 By following these steps, you can set up a local development environment with KIND and AWX, allowing you to test and learn Ansible automation in a safe and isolated environment. This setup is ideal for developers who want to experiment with AWX without the need for extensive infrastructure, making it a cost-effective and convenient solution.
 
