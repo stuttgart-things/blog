@@ -288,7 +288,7 @@ controller:
       effect: "NoSchedule"
 
   service:
-    type: NodePort  # Required only if you want external access
+    type: ClusterIP  # Required only if you want external access
   admissionWebhooks:
     enabled: false  # Avoids potential Kind issues
   hostPort:
