@@ -260,6 +260,7 @@ autoDirectNodeRoutes: true
 
 operator:
   replicas: 2 # Change if needed
+EOF
 ```
 
 </details><br>
@@ -292,6 +293,7 @@ controller:
     enabled: false  # Avoids potential Kind issues
   hostPort:
     enabled: true  # Enables direct binding to host ports
+EOF
 ```
 
 </details><br>
