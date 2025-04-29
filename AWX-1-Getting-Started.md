@@ -301,7 +301,7 @@ EOF
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-nginx --disable-openapi-validation # -f /tmp/ingress-nginx-values.yaml 
+helm install ingress-nginx ingress-nginx/ingress-nginx --version 4.12.0 --create-namespace --namespace ingress-nginx --disable-openapi-validation # -f /tmp/ingress-nginx-values.yaml 
 ```
 
 ##### cert-manager
