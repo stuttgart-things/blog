@@ -135,6 +135,7 @@ Add these arguments to the execution command<br>
 ```yaml
 -e kind_cluster_name=<name> \ # Enter same cluster name of above
 -e control_plane_ip=xx.xxx.xxx.xx # Enter ip from last task output from first play
+-e ansible_user=<user> # Enter user
 ```
 
 </details><br>
@@ -165,7 +166,7 @@ Create a YAML file with the desired cluster configuration.
 <details><summary>Example cluster configuration</summary>
 
 ```yaml
-cat <<EOF > kind-config.yaml
+cat <<EOF > /tmp/kind-config.yaml
 ---
 kind: Cluster
 name: <name> # Enter Clustername
@@ -211,7 +212,7 @@ EOF
 Execute this command to create the KIND cluster.
 
 ```bash
-kind create cluster --config kind-config.yaml
+kind create cluster --config /tmp/kind-config.yaml
 ```
 
 <details><summary>Don't forget to export the KUBECONFIG</summary>
@@ -233,38 +234,88 @@ CLUSTERNAME=<clustername> # Enter clustername (use the same as in kind-config.ya
 
 ##### cilium
 
+<details><summary>Cilium-values</summary>
+
+```yaml
+cat <<EOF > /tmp/cilium-values.yaml
+---
+kubeProxyReplacement: true
+routingMode: "native"
+ipv4NativeRoutingCIDR: "xx.xxx.x.x/xx" # Enter CIDR
+k8sServiceHost: "{{ CLUSTERNAME }}-control-plane"
+k8sServicePort: 6443
+
+l2announcements:
+  enabled: true
+  leaseDuration: "3s"
+  leaseRenewDeadline: "1s"
+  leaseRetryPeriod: "500ms"
+
+devices: ["eth0", "net0"]
+
+externalIPs:
+  enabled: true
+
+autoDirectNodeRoutes: true
+
+operator:
+  replicas: 2 # Change if needed
+```
+
+</details><br>
+
 ```bash
 helm repo add cilium https://helm.cilium.io/
-docker pull quay.io/cilium/cilium:v1.17.2
-kind load docker-image quay.io/cilium/cilium:v1.17.2 --name $CLUSTERNAME
 
-helm install cilium cilium/cilium --version 1.17.2 --namespace kube-system --set image.pullPolicy=IfNotPresent --set ipam.mode=kubernetes # -f cilium-values.yaml
+helm install cilium cilium/cilium --version 1.17.2 --namespace kube-system --set image.pullPolicy=IfNotPresent --set ipam.mode=kubernetes # -f /tmp/cilium-values.yaml
 ```
 
 ##### ingress-nginx
 
+<details><summary>Ingress-nginx-values</summary>
+
+```yaml
+cat <<EOF > /tmp/ingress-nginx-values.yaml 
+---
+controller:
+  nodeSelector:
+    ingress-ready: "true"
+    node-role.kubernetes.io/control-plane: "{{ CLUSTERNAME }}-control-plane"  # Ensures it runs on the control plane
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+
+  service:
+    type: NodePort  # Required only if you want external access
+  admissionWebhooks:
+    enabled: false  # Avoids potential Kind issues
+  hostPort:
+    enabled: true  # Enables direct binding to host ports
+```
+
+</details><br>
+
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-docker pull registry.k8s.io/ingress-nginx/controller:v1.12.0@sha256:e6b8de175acda6ca913891f0f727bca4527e797d52688cbe9fec9040d6f6b6fa
-kind load docker-image registry.k8s.io/ingress-nginx/controller:v1.12.0@sha256:e6b8de175acda6ca913891f0f727bca4527e797d52688cbe9fec9040d6f6b6fa --name $CLUSTERNAME
 
-helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-nginx --disable-openapi-validation # -f ingress-nginx.values.yaml 
+helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace ingress-nginx --disable-openapi-validation # -f /tmp/ingress-nginx-values.yaml 
 ```
 
 ##### cert-manager
 
 ```bash
 helm repo add jetstack https://charts.jetstack.io
-docker pull quay.io/jetstack/cert-manager-controller:v1.17.1
-kind load docker-image quay.io/jetstack/cert-manager-controller:v1.17.1 --name $CLUSTERNAME
 
-helm install cert-manager cert-manager/cert-manager --version v1.17.1 --create-namespace --namespace cert-manager # -f cert-manager-values.yaml
+kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
+# helm install cert-manager jetstack/cert-manager --version v1.17.2 --create-namespace --namespace cert-manager # -f cert-manager-values.yaml
+
 ```
 
 Next you need to deploy a clusterissuer:
 
 ```yaml
-cat <<EOF > issuer.yaml
+cat <<EOF | kubectl apply -f -
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -272,10 +323,6 @@ metadata:
 spec:
   selfSigned: {}
 EOF
-```
-
-```bash
-kubectl apply -f issuer.yaml
 ```
 
 ##### awx
@@ -294,10 +341,8 @@ EOF
 
 ```bash
 helm repo add awx-operator https://ansible-community.github.io/awx-operator-helm/
-docker pull quay.io/ansible/awx-operator:2.19.1
-kind load docker-image quay.io/ansible/awx-operator:2.19.1 --name $CLUSTERNAME
 
-helm install awx-operator awx-operator/awx-operator --create-namespace --namespace awx -f awx-values.yaml
+helm install awx-operator awx-operator/awx-operator --version 3.1.0 --create-namespace --namespace awx -f awx-values.yaml
 ```
 
 To access AWX in your browser you can port-forward:
