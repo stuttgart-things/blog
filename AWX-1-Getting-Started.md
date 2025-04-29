@@ -281,7 +281,7 @@ cat <<EOF > /tmp/ingress-nginx-values.yaml
 controller:
   nodeSelector:
     ingress-ready: "true"
-    node-role.kubernetes.io/control-plane: "{{ CLUSTERNAME }}-control-plane"  # Ensures it runs on the control plane
+    node-role.kubernetes.io/control-plane: ""  # Ensures it runs on the control plane
   tolerations:
     - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
