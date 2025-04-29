@@ -330,7 +330,7 @@ EOF
 ##### awx
 
 ```yaml
-cat <<EOF > awx-values.yaml
+cat <<EOF > /tmp/awx-values.yaml
 AWX:
   enabled: true
   spec:
@@ -344,7 +344,25 @@ EOF
 ```bash
 helm repo add awx-operator https://ansible-community.github.io/awx-operator-helm/
 
-helm install awx-operator awx-operator/awx-operator --version 3.1.0 --create-namespace --namespace awx -f awx-values.yaml
+helm install awx-operator awx-operator/awx-operator --version 3.1.0 --create-namespace --namespace awx -f /tmp/awx-values.yaml
+```
+
+```yaml
+cat <<EOF | kubectl apply -f -
+apiVersion: awx.ansible.com/v1beta1
+kind: AWX
+metadata:
+  name: awx
+  namespace: awx
+spec:
+  service_type: ClusterIP
+  ingress_type: ingress
+  hostname: <hostname> # Enter hostname
+EOF
+```
+
+```bash
+kubectl apply -f /tmp/awx-values.yaml
 ```
 
 To access AWX in your browser you can port-forward:
