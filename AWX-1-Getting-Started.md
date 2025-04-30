@@ -169,7 +169,7 @@ Create a YAML file with the desired cluster configuration.
 cat <<EOF > /tmp/kind-config.yaml
 ---
 kind: Cluster
-name: <name> # Enter Clustername
+name: dev
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
   disableDefaultCNI: True # Disabled because cilium gets deployed, change if needed
@@ -355,10 +355,6 @@ spec:
   ingress_type: ingress
   hostname: <hostname> # Enter hostname
 EOF
-```
-
-```bash
-kubectl apply -f /tmp/awx-values.yaml
 ```
 
 To access AWX in your browser you can port-forward:
