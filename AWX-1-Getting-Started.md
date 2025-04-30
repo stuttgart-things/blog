@@ -176,7 +176,7 @@ networking:
 #  kubeProxyMode: none
 nodes:
   - role: control-plane
-    image: kindest/node:v1.33
+    image: kindest/node:v1.33.0.0
     kubeadmConfigPatches:
       - |
         kind: InitConfiguration
@@ -191,17 +191,17 @@ nodes:
         hostPort: 443
         protocol: TCP
   - role: worker
-    image: kindest/node:v1.33
+    image: kindest/node:v1.33.0
     extraMounts:
       - hostPath: /mnt/data-node1 # Host directory to mount
         containerPath: /data # Mount path inside the KinD node
   - role: worker
-    image: kindest/node:v1.33
+    image: kindest/node:v1.33.0
     extraMounts:
       - hostPath: /mnt/data-node2 # Host directory to mount
         containerPath: /data # Mount path inside the KinD node
   - role: worker
-    image: kindest/node:v1.33
+    image: kindest/node:v1.33.0
     extraMounts:
       - hostPath: /mnt/data-node3 # Host directory to mount
         containerPath: /data # Mount path inside the KinD node
