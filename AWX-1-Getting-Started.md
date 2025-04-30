@@ -228,10 +228,6 @@ The cluster nodes will remain in state **NotReady** until Cilium is deployed. Th
 
 To deploy cilium, ingress-nginx and cert-manager use these following commands.
 
-```yaml
-CLUSTERNAME=<clustername> # Enter clustername (use the same as in kind-config.yaml)
-```
-
 ##### cilium
 
 <details><summary>Cilium-values</summary>
@@ -241,8 +237,8 @@ cat <<EOF > /tmp/cilium-values.yaml
 ---
 kubeProxyReplacement: true
 routingMode: "native"
-ipv4NativeRoutingCIDR: "xx.xxx.x.x/xx" # Enter CIDR
-k8sServiceHost: "{{ CLUSTERNAME }}-control-plane"
+ipv4NativeRoutingCIDR: "10.244.0.0/16"
+k8sServiceHost: "dev-control-plane"
 k8sServicePort: 6443
 
 l2announcements:
