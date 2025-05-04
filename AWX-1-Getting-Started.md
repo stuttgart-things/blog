@@ -183,7 +183,7 @@ networking:
 #  kubeProxyMode: none
 nodes:
   - role: control-plane
-    image: kindest/node:v1.33.0.0
+    image: kindest/node:v1.33.0
     kubeadmConfigPatches:
       - |
         kind: InitConfiguration
@@ -249,7 +249,7 @@ cat <<EOF > /tmp/cilium-values.yaml
 kubeProxyReplacement: true
 routingMode: "native"
 ipv4NativeRoutingCIDR: "10.244.0.0/16"
-k8sServiceHost: "dev-control-plane"
+k8sServiceHost: "awx-control-plane"
 k8sServicePort: 6443
 
 l2announcements:
@@ -275,10 +275,15 @@ EOF
 ```bash
 helm repo add cilium https://helm.cilium.io/
 
-helm upgrade --install cilium cilium/cilium --version 1.17.3 --namespace kube-system --values tmp/cilium-values.yaml
+helm upgrade \
+--install cilium  \
+cilium/cilium \
+--version 1.17.3 \
+--namespace kube-system \
+--values /tmp/cilium-values.yaml
 ```
 
-##### ingress-nginx
+##### INGRESS-NGINX
 
 <details><summary>Ingress-nginx-values</summary>
 
@@ -308,10 +313,15 @@ EOF
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-helm install ingress-nginx ingress-nginx/ingress-nginx --version 4.12.0 --create-namespace --namespace ingress-nginx --disable-openapi-validation # -f /tmp/ingress-nginx-values.yaml 
+helm upgrade --install ingress-nginx \
+ingress-nginx/ingress-nginx \
+--version 4.12.2 \
+--create-namespace \
+--namespace ingress-nginx \
+--values /tmp/ingress-nginx-values.yaml 
 ```
 
-##### cert-manager
+##### CERT-MANAGER
 
 ```bash
 helm repo add jetstack https://charts.jetstack.io
@@ -334,7 +344,7 @@ spec:
 EOF
 ```
 
-##### awx
+##### AWX
 
 ```yaml
 cat <<EOF > /tmp/awx-values.yaml
