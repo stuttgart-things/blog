@@ -326,12 +326,15 @@ ingress-nginx/ingress-nginx \
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 
-kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
-# helm install cert-manager jetstack/cert-manager --version v1.17.2 --create-namespace --namespace cert-manager # -f cert-manager-values.yaml
-
+helm upgrade --install cert-manager \
+jetstack/cert-manager \
+--version v1.17.2 \
+--create-namespace \
+--namespace cert-manager \
+--set crds.enabled=true
 ```
 
-Next you need to deploy a clusterissuer:
+Next you need to create a clusterissuer:
 
 ```yaml
 cat <<EOF | kubectl apply -f -
@@ -346,23 +349,17 @@ EOF
 
 ##### AWX
 
-```yaml
-cat <<EOF > /tmp/awx-values.yaml
-AWX:
-  enabled: true
-  spec:
-    service_type: ClusterIP
-    ingress_type: ingress 
-    hostname: <hostname> # Enter Cluster ip
-    ingress_class_name: nginx
-EOF
-```
-
 ```bash
 helm repo add awx-operator https://ansible-community.github.io/awx-operator-helm/
 
-helm install awx-operator awx-operator/awx-operator --version 3.1.0 --create-namespace --namespace awx -f /tmp/awx-values.yaml
+helm upgrade --install awx-operator \
+awx-operator/awx-operator \
+--version 3.1.0 \
+--create-namespace \
+--namespace awx \
+--set AWX.enabled=false
 ```
+
 
 ```yaml
 cat <<EOF | kubectl apply -f -
