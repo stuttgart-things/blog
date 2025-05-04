@@ -29,6 +29,8 @@ Understanding the key terminology in AWX is crucial for effectively using the pl
 
 By leveraging KIND (Kubernetes IN Docker), developers can create a local, isolated environment to experiment with AWX easily and safely. KIND offers simplicity, local development, isolation, consistency with production, resource efficiency, and strong community support.
 
+## Create KIND cluster and deploy AWX w/ ansible cli
+
 <details><summary>Install requirements</summary>
 
 The requirements file you need to install:
@@ -73,8 +75,6 @@ ansible-galaxy collection install -r ./requirements.yaml -f
 This command will download and install all the necessary collections and roles defined in the requirements.yaml file, ensuring that your Ansible environment is ready for the subsequent tasks to install KIND and AWX.
 
 </details>
-
-## Create KIND and deploy AWX
 
 ### Inventory file
 
@@ -154,14 +154,17 @@ export KUBECONFIG=/home/<user>/.kube/<config>
 ```
 </details>
 
-<details><summary>MANUAL INSTALL</summary>
+## Create KIND cluster and deploy AWX manualy
 
-#### Install Kind
+what is with the requirement docker? at least 1-2 sentences here. is podman also possible?
+
+<details><summary>INSTALL KIND (CLI)</summary>
 
 Download the Kind binary from the Kind releases page, make the binary executable and move it to a directory in your $PATH.
 
 ```bash
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
+VERSION=v0.27.0
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/${VERSION}/kind-linux-amd64
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 ```
@@ -174,7 +177,6 @@ Create a YAML file with the desired cluster configuration.
 cat <<EOF > /tmp/kind-config.yaml
 ---
 kind: Cluster
-name: dev
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
   disableDefaultCNI: True # Disabled because cilium gets deployed, change if needed
@@ -217,14 +219,18 @@ EOF
 Execute this command to create the KIND cluster.
 
 ```bash
-kind create cluster --config /tmp/kind-config.yaml
+mkdir -p ~/.kube || true
+kind create cluster --name awx --config /tmp/kind-config.yaml --kubeconfig ~/.kube/awx
 ```
 
 <details><summary>Don't forget to export the KUBECONFIG</summary>
 
+</details>
+
 ```bash
-export KUBECONFIG=/home/<user>/.kube/<config>
+export KUBECONFIG=~/.kube/awx
 ```
+
 </details><br>
 
 The cluster nodes will remain in state **NotReady** until Cilium is deployed. This behavior is expected.
@@ -269,7 +275,7 @@ EOF
 ```bash
 helm repo add cilium https://helm.cilium.io/
 
-helm install cilium cilium/cilium --version 1.17.2 --namespace kube-system --set image.pullPolicy=IfNotPresent --set ipam.mode=kubernetes # -f /tmp/cilium-values.yaml
+helm upgrade --install cilium cilium/cilium --version 1.17.3 --namespace kube-system --values tmp/cilium-values.yaml
 ```
 
 ##### ingress-nginx
@@ -362,7 +368,6 @@ spec:
 EOF
 ```
 
-</details>
 
 To access AWX in your browser you can port-forward:
 
