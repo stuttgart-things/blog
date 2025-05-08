@@ -360,29 +360,125 @@ awx-operator/awx-operator \
 --set AWX.enabled=false
 ```
 
+To setup AWX with your own Password you need to create a Secret first.
+
 ```yaml
-cat <<EOF | kubectl apply -f -
+cat <<EOF > /tmp/awx-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: <username>-admin-password # Enter username
+  namespace: awx
+type: Opaque
+stringData:
+  password: <password> # Enter password
+EOF
+```
+
+```bash
+kubectl apply -f /tmp/awx-secret.yaml
+```
+
+To ensure the AWX instance works with Ingress-nginx and Cert-manager, you need to create a certificate and configure the AWX ingress accordingly.
+
+```yaml
+cat <<EOF > /tmp/awx-cert.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: <hostname>-ingress
+  namespace: awx
+spec:
+  commonName: <hostname>.<domain> # Enter hostname and domain
+  dnsNames:
+    - <hostname>.<domain> # Enter hostname and domain
+  issuerRef:
+    name: selfsigned
+    kind: ClusterIssuer
+  secretName: awx-dev-tls
+EOF
+```
+
+```bash
+kubectl apply -f /tmp/awx-cert.yaml
+```
+
+```yaml
+cat <<EOF > /tmp/awx-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: awx-dev-ingress
+  namespace: awx
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "selfsigned"
+spec:
+  ingressClassName: "nginx"
+  tls:
+  - hosts:
+    - <hostname>.<domain> # Enter hostname and domain
+    secretName: awx-dev-tls
+  rules:
+  - host: <hostname>.<domain> # Enter hostname and domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: awx-service
+            port:
+              number: 80
+EOF
+```
+
+```bash
+kubectl apply -f /tmp/awx-ingress.yaml
+```
+
+Finally we create the AWX-Instance.
+
+```yaml
+cat <<EOF > /tmp/awx-instance-values.yaml
 apiVersion: awx.ansible.com/v1beta1
 kind: AWX
 metadata:
-  name: awx
+  name: awx-dev
   namespace: awx
 spec:
+  admin_user: <username> # Enter username
+  admin_password_secret: <username>-admin-password # Enter secret name / username
   service_type: ClusterIP
+  ingress_class_name: nginx
   ingress_type: ingress
   hostname: <hostname>.<domain> # Enter hostname and domain
 EOF
 ```
 
-To access AWX in your browser you can port-forward:
-
 ```bash
-kubectl port-forward svc/awx-service -n awx 8080:80
+kubectl apply -f /tmp/awx-instance-values.yaml
 ```
 
-Now you can reach AWX in you browser with: http://localhost:8080
+#### Access AWX on Remote-VM
 
-If you installed KIND on a VM you can access AWX with the cluster ip.
+To access AWX in your local browser you need to add an entry into your /etc/hosts file:
+
+```bash
+# to get the <ip-remote-vm> use this command:
+# hostname -i
+#
+# to get <hostname>.<domain> use this command:
+# kubectl -n awx get ingress -o custom-columns=:.spec.rules[*].host --no-headers
+
+<ip-remote-vm> <hostname>.<domain>
+```
+
+Now you can reach AWX in you browser with:
+
+```bash
+<hostname>.<domain> # kubectl -n awx get ingress -o custom-columns=:.spec.rules[*].host --no-headers
+```
 
 By following these steps, you can set up a local development environment with KIND and AWX, allowing you to test and learn Ansible automation in a safe and isolated environment. This setup is ideal for developers who want to experiment with AWX without the need for extensive infrastructure, making it a cost-effective and convenient solution.
 
