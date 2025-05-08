@@ -1,13 +1,13 @@
 # Getting started with AWX
-<img src="https://private-user-images.githubusercontent.com/166600787/433764776-cc322bef-5985-4eb4-a6c6-5618d9b2a3e4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDQ3MTAxMDYsIm5iZiI6MTc0NDcwOTgwNiwicGF0aCI6Ii8xNjY2MDA3ODcvNDMzNzY0Nzc2LWNjMzIyYmVmLTU5ODUtNGViNC1hNmM2LTU2MThkOWIyYTNlNC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDE1JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQxNVQwOTM2NDZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT00YTVkNWFhNjM3Mzg0NGExMDc4YmFiMjYyYTdlNjU5NDgyNzhjY2I1N2YxNTMxMjg0MDk2YjZlMGJlZTRmMWJmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.pYi2f40fey2n324TKm7UTSVCFXPZvIUHaukFsRfHpyQ" align="right" width="300">
+<img src="https://private-user-images.githubusercontent.com/166600787/433764776-cc322bef-5985-4eb4-a6c6-5618d9b2a3e4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDYzMzcyODIsIm5iZiI6MTc0NjMzNjk4MiwicGF0aCI6Ii8xNjY2MDA3ODcvNDMzNzY0Nzc2LWNjMzIyYmVmLTU5ODUtNGViNC1hNmM2LTU2MThkOWIyYTNlNC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNTA0JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDUwNFQwNTM2MjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04NjM0MWVlZDUyZmFlMDI3MGE4YzYwMzNmOGI4ZDE2NDg0ZjNiNzdkZTViZjIxNjdlY2M5MzZhNWY4NGVhYjk0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9._ylOV4eFgSS6A7fVSiHXBN5S9uIluzi9tO4gbAkkcTI" align="center" width="300">
 
 This blog post provides a comprehensive guide to setting up AWX in a local development environment using KIND (Kubernetes IN Docker).
 
-## What is AWX and its purpose
+## What is AWX?
 
 AWX is an open-source project that provides a web-based user interface, REST API, and task engine for Ansible. It is the upstream project from which the Red Hat Ansible Automation Platform (AAP) is derived. AWX allows users and organizations to manage Ansible playbooks, inventories, and credentials in a centralized and user-friendly manner. It provides a web-based interface that simplifies the infrastructure automation process and projects, enhancing team collaboration through a structured approach.
 
-## Key Terminology
+<details><summary>Terminology</summary>
 
 Understanding the key terminology in AWX is crucial for effectively using the platform:
 
@@ -23,11 +23,15 @@ Understanding the key terminology in AWX is crucial for effectively using the pl
 | Workflows | Workflows are sequences of job templates that can be executed in a specific order, where the templates may or may not share inventory, playbooks, or permissions. They allow you to chain multiple automation tasks together, enabling more complex and conditional automation scenarios. |
 | Execution Environments | Execution Environments in AWX are containerized environments that provide the necessary dependencies and runtime for executing Ansible playbooks. They ensure consistency and isolation of the execution context, allowing users to define and manage the specific versions of Ansible and other required tools. Execution Environments can be customized and shared across different teams and projects, facilitating a standardized and reproducible automation process. |
 
-## Why AWX in KIND?
+</details>
+
+## Why unsing AWX in KIND?
 
 By leveraging KIND (Kubernetes IN Docker), developers can create a local, isolated environment to experiment with AWX easily and safely. KIND offers simplicity, local development, isolation, consistency with production, resource efficiency, and strong community support.
 
-## Install Roles and Collections
+## Create KIND cluster and deploy AWX w/ ansible cli
+
+<details><summary>Install requirements</summary>
 
 The requirements file you need to install:
 
@@ -59,6 +63,7 @@ collections:
   - name: https://github.com/stuttgart-things/ansible/releases/download/sthings-rke-25.1.568.tar.gz/sthings-rke-25.1.568.tar.gz
 EOF
 ```
+
 <br>
 
 To install the specified collections and roles, use the following command:
@@ -69,7 +74,7 @@ ansible-galaxy collection install -r ./requirements.yaml -f
 
 This command will download and install all the necessary collections and roles defined in the requirements.yaml file, ensuring that your Ansible environment is ready for the subsequent tasks to install KIND and AWX.
 
-## Create KIND and deploy AWX
+</details>
 
 ### Inventory file
 
@@ -149,14 +154,17 @@ export KUBECONFIG=/home/<user>/.kube/<config>
 ```
 </details>
 
-### Manual install
+## Create KIND cluster and deploy AWX manualy
 
-#### Install Kind
+what is with the requirement docker? at least 1-2 sentences here. is podman also possible?
+
+<details><summary>INSTALL KIND (CLI)</summary>
 
 Download the Kind binary from the Kind releases page, make the binary executable and move it to a directory in your $PATH.
 
 ```bash
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
+VERSION=v0.27.0
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/${VERSION}/kind-linux-amd64
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 ```
@@ -169,14 +177,13 @@ Create a YAML file with the desired cluster configuration.
 cat <<EOF > /tmp/kind-config.yaml
 ---
 kind: Cluster
-name: dev
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
   disableDefaultCNI: True # Disabled because cilium gets deployed, change if needed
 #  kubeProxyMode: none
 nodes:
   - role: control-plane
-    image: kindest/node:v1.33.0.0
+    image: kindest/node:v1.33.0
     kubeadmConfigPatches:
       - |
         kind: InitConfiguration
@@ -212,14 +219,18 @@ EOF
 Execute this command to create the KIND cluster.
 
 ```bash
-kind create cluster --config /tmp/kind-config.yaml
+mkdir -p ~/.kube || true
+kind create cluster --name awx --config /tmp/kind-config.yaml --kubeconfig ~/.kube/awx
 ```
 
 <details><summary>Don't forget to export the KUBECONFIG</summary>
 
+</details>
+
 ```bash
-export KUBECONFIG=/home/<user>/.kube/<config>
+export KUBECONFIG=~/.kube/awx
 ```
+
 </details><br>
 
 The cluster nodes will remain in state **NotReady** until Cilium is deployed. This behavior is expected.
@@ -238,7 +249,7 @@ cat <<EOF > /tmp/cilium-values.yaml
 kubeProxyReplacement: true
 routingMode: "native"
 ipv4NativeRoutingCIDR: "10.244.0.0/16"
-k8sServiceHost: "dev-control-plane"
+k8sServiceHost: "awx-control-plane"
 k8sServicePort: 6443
 
 l2announcements:
@@ -264,10 +275,15 @@ EOF
 ```bash
 helm repo add cilium https://helm.cilium.io/
 
-helm install cilium cilium/cilium --version 1.17.2 --namespace kube-system --set image.pullPolicy=IfNotPresent --set ipam.mode=kubernetes # -f /tmp/cilium-values.yaml
+helm upgrade \
+--install cilium  \
+cilium/cilium \
+--version 1.17.3 \
+--namespace kube-system \
+--values /tmp/cilium-values.yaml
 ```
 
-##### ingress-nginx
+##### INGRESS-NGINX
 
 <details><summary>Ingress-nginx-values</summary>
 
@@ -297,20 +313,28 @@ EOF
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-helm install ingress-nginx ingress-nginx/ingress-nginx --version 4.12.0 --create-namespace --namespace ingress-nginx --disable-openapi-validation # -f /tmp/ingress-nginx-values.yaml 
+helm upgrade --install ingress-nginx \
+ingress-nginx/ingress-nginx \
+--version 4.12.2 \
+--create-namespace \
+--namespace ingress-nginx \
+--values /tmp/ingress-nginx-values.yaml 
 ```
 
-##### cert-manager
+##### CERT-MANAGER
 
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 
-kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
-# helm install cert-manager jetstack/cert-manager --version v1.17.2 --create-namespace --namespace cert-manager # -f cert-manager-values.yaml
-
+helm upgrade --install cert-manager \
+jetstack/cert-manager \
+--version v1.17.2 \
+--create-namespace \
+--namespace cert-manager \
+--set crds.enabled=true
 ```
 
-Next you need to deploy a clusterissuer:
+Next you need to create a clusterissuer:
 
 ```yaml
 cat <<EOF | kubectl apply -f -
@@ -323,25 +347,19 @@ spec:
 EOF
 ```
 
-##### awx
-
-```yaml
-cat <<EOF > /tmp/awx-values.yaml
-AWX:
-  enabled: true
-  spec:
-    service_type: ClusterIP
-    ingress_type: ingress 
-    hostname: <hostname> # Enter Cluster ip
-    ingress_class_name: nginx
-EOF
-```
+##### AWX
 
 ```bash
 helm repo add awx-operator https://ansible-community.github.io/awx-operator-helm/
 
-helm install awx-operator awx-operator/awx-operator --version 3.1.0 --create-namespace --namespace awx -f /tmp/awx-values.yaml
+helm upgrade --install awx-operator \
+awx-operator/awx-operator \
+--version 3.1.0 \
+--create-namespace \
+--namespace awx \
+--set AWX.enabled=false
 ```
+
 
 ```yaml
 cat <<EOF | kubectl apply -f -
@@ -356,6 +374,7 @@ spec:
   hostname: <hostname> # Enter hostname
 EOF
 ```
+
 
 To access AWX in your browser you can port-forward:
 
