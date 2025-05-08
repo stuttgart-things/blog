@@ -25,7 +25,7 @@ Understanding the key terminology in AWX is crucial for effectively using the pl
 
 </details>
 
-## Why unsing AWX in KIND?
+## Why using AWX in KIND?
 
 By leveraging KIND (Kubernetes IN Docker), developers can create a local, isolated environment to experiment with AWX easily and safely. KIND offers simplicity, local development, isolation, consistency with production, resource efficiency, and strong community support.
 
@@ -147,7 +147,7 @@ Add these arguments to the execution command<br>
 
 These commands execute the plays against the host(s) defined in your inventory file (-i <inventory>), with verbose output enabled (-vv). This will provide detailed logs and status information, helping you monitor the execution process and troubleshoot any issues that arise.
 
-<details><summary>Don't forget to export the KUBECONFIG</summary>
+<details><summary>Don't forget to export the KUBECONFIG if necessary</summary>
 
 ```bash
 export KUBECONFIG=/home/<user>/.kube/<config>
@@ -156,7 +156,7 @@ export KUBECONFIG=/home/<user>/.kube/<config>
 
 ## Create KIND cluster and deploy AWX manualy
 
-what is with the requirement docker? at least 1-2 sentences here. is podman also possible?
+Before you can start can start you need to ensure Docker is installed and configured. Docker is essential for KIND as it runs Kubernetes clusters in Docker containers. Podman can also be used as an alternative to Docker for running containers, but it requires additional configuration to work with KIND
 
 <details><summary>INSTALL KIND (CLI)</summary>
 
@@ -223,7 +223,7 @@ mkdir -p ~/.kube || true
 kind create cluster --name awx --config /tmp/kind-config.yaml --kubeconfig ~/.kube/awx
 ```
 
-<details><summary>Don't forget to export the KUBECONFIG</summary>
+<details><summary>Don't forget to export the KUBECONFIG if necessary</summary>
 
 </details>
 
@@ -327,7 +327,7 @@ ingress-nginx/ingress-nginx \
 helm repo add jetstack https://charts.jetstack.io
 
 helm upgrade --install cert-manager \
-jetstack/cert-manager \
+cert-manager/cert-manager \
 --version v1.17.2 \
 --create-namespace \
 --namespace cert-manager \
@@ -360,7 +360,6 @@ awx-operator/awx-operator \
 --set AWX.enabled=false
 ```
 
-
 ```yaml
 cat <<EOF | kubectl apply -f -
 apiVersion: awx.ansible.com/v1beta1
@@ -371,10 +370,9 @@ metadata:
 spec:
   service_type: ClusterIP
   ingress_type: ingress
-  hostname: <hostname> # Enter hostname
+  hostname: <hostname>.<domain> # Enter hostname and domain
 EOF
 ```
-
 
 To access AWX in your browser you can port-forward:
 
