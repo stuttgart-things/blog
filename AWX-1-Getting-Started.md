@@ -379,7 +379,7 @@ EOF
 kubectl apply -f /tmp/awx-secret.yaml
 ```
 
-To ensure the AWX instance works with Ingress-nginx and Cert-manager, you need to create a certificate and configure the AWX ingress accordingly.
+To ensure the AWX instance works with Ingress-nginx and Cert-manager, you need to create a certificate accordingly.
 
 ```yaml
 cat <<EOF > /tmp/awx-cert.yaml
@@ -403,40 +403,6 @@ EOF
 kubectl apply -f /tmp/awx-cert.yaml
 ```
 
-```yaml
-cat <<EOF > /tmp/awx-ingress.yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: awx-dev-ingress
-  namespace: awx
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: "selfsigned"
-spec:
-  ingressClassName: "nginx"
-  tls:
-  - hosts:
-    - <hostname>.<domain> # Enter hostname and domain
-    secretName: awx-dev-tls
-  rules:
-  - host: <hostname>.<domain> # Enter hostname and domain
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: awx-service
-            port:
-              number: 80
-EOF
-```
-
-```bash
-kubectl apply -f /tmp/awx-ingress.yaml
-```
-
 Finally we create the AWX-Instance.
 
 ```yaml
@@ -444,15 +410,29 @@ cat <<EOF > /tmp/awx-instance-values.yaml
 apiVersion: awx.ansible.com/v1beta1
 kind: AWX
 metadata:
-  name: awx-dev
+  name: awx
   namespace: awx
 spec:
   admin_user: <username> # Enter username
   admin_password_secret: <username>-admin-password # Enter secret name / username
-  service_type: ClusterIP
   ingress_class_name: nginx
   ingress_type: ingress
+  ingress_tls_secret: awx-dev-tls
   hostname: <hostname>.<domain> # Enter hostname and domain
+  postgres_storage_class: standard
+  postgres_storage_requirements:
+    limits:
+      storage: 8Gi
+    requests:
+      storage: 1Gi
+  projects_persistence: false
+  projects_storage_access_mode: ReadWriteOnce
+  projects_storage_class: standard
+  security_context_settings:
+    runAsGroup: 0
+    runAsUser: 0
+    fsGroup: 0
+    fsGroupChangePolicy: OnRootMismatch
 EOF
 ```
 
