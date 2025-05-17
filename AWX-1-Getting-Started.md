@@ -165,7 +165,7 @@ networking:
 #  kubeProxyMode: none
 nodes:
   - role: control-plane
-    image: kindest/node:v1.33.0
+    image: kindest/node:v1.32.3
     kubeadmConfigPatches:
       - |
         kind: InitConfiguration
@@ -180,17 +180,17 @@ nodes:
         hostPort: 443
         protocol: TCP
   - role: worker
-    image: kindest/node:v1.33.0
+    image: kindest/node:v1.32.3
     extraMounts:
       - hostPath: /mnt/data-node1 # Host directory to mount
         containerPath: /data # Mount path inside the KinD node
   - role: worker
-    image: kindest/node:v1.33.0
+    image: kindest/node:v1.32.3
     extraMounts:
       - hostPath: /mnt/data-node2 # Host directory to mount
         containerPath: /data # Mount path inside the KinD node
   - role: worker
-    image: kindest/node:v1.33.0
+    image: kindest/node:v1.32.3
     extraMounts:
       - hostPath: /mnt/data-node3 # Host directory to mount
         containerPath: /data # Mount path inside the KinD node
@@ -306,7 +306,7 @@ ingress-nginx/ingress-nginx \
 ##### CERT-MANAGER
 
 ```bash
-helm repo add jetstack https://charts.jetstack.io
+helm repo add cert-manager https://charts.jetstack.io
 
 helm upgrade --install cert-manager \
 cert-manager/cert-manager \
